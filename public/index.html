@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SLINK DINKESPPKB</title>
+  <meta name="description" content="Portal link resmi Dinas Kesehatan Kabupaten Banggai Laut" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --hijau:       #0077B6;
+      --hijau-mid:   #00B4D8;
+      --hijau-light: #e0f4f8;
+      --emas:        #48CAE4;
+      --emas-light:  #eaf9fc;
+      --putih:       #ffffff;
+      --abu-1:       #f0f8fb;
+      --abu-2:       #d0ecf3;
+      --abu-3:       #90c4d4;
+      --teks:        #0d2d3a;
+      --teks-mid:    #2a6070;
+      --teks-muted:  #6a9aaa;
+      --shadow-sm:   0 1px 4px rgba(0,119,182,.08);
+      --shadow-md:   0 4px 20px rgba(0,119,182,.14);
+      --shadow-lg:   0 8px 40px rgba(0,119,182,.18);
+      --radius:      14px;
+      --radius-sm:   8px;
+      --transition:  .22s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="dark"] {
+      --hijau:       #00B4D8;
+      --hijau-mid:   #48CAE4;
+      --hijau-light: #0a2030;
+      --emas:        #48CAE4;
+      --emas-light:  #0a1e28;
+      --putih:       #0d1e26;
+      --abu-1:       #0a1820;
+      --abu-2:       #122430;
+      --abu-3:       #1e3d50;
+      --teks:        #e0f4f8;
+      --teks-mid:    #90c4d4;
+      --teks-muted:  #4a7a8a;
+      --shadow-sm:   0 1px 4px rgba(0,0,0,.3);
+      --shadow-md:   0 4px 20px rgba(0,0,0,.4);
+      --shadow-lg:   0 8px 40px rgba(0,0,0,.5);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: url('/bg.jpg') center center / cover fixed no-repeat;
+      color: var(--teks);
+      min-height: 100vh;
+      transition: color var(--transition);
+    }
+
+    /* ── BACKGROUND OVERLAY ───────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(135deg, rgba(0,119,182,.80) 0%, rgba(0,180,216,.75) 50%, rgba(0,137,77,.78) 100%);
+      pointer-events: none;
+    }
+
+    .page-wrap {
+      position: relative; z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+
+    /* ── HEADER ───────────────────────────────── */
+    .header {
+      text-align: center;
+      padding: 40px 20px 28px;
+      animation: fadeDown .5s ease both;
+    }
+    .logo-wrap {
+      width: 88px; height: 88px;
+      margin: 0 auto 16px;
+      border-radius: 24px;
+      background: var(--putih);
+      box-shadow: var(--shadow-md);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      border: 3px solid var(--hijau-light);
+    }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .logo-placeholder {
+      font-size: 40px;
+      line-height: 1;
+    }
+    .header-nama {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -.3px;
+      line-height: 1.3;
+      text-shadow: 0 1px 6px rgba(0,0,0,.25);
+    }
+    .header-tagline {
+      font-size: .85rem;
+      color: rgba(255,255,255,.85);
+      margin-top: 4px;
+      text-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+
+    /* ── SEARCH ───────────────────────────────── */
+    .search-wrap {
+      position: relative;
+      margin: 0 0 20px;
+      animation: fadeUp .45s .1s ease both;
+    }
+    .search-wrap svg {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--teks-muted); pointer-events: none;
+    }
+    #searchInput {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1.5px solid rgba(255,255,255,.6);
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: .95rem;
+      color: var(--teks);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    #searchInput:focus {
+      border-color: rgba(255,255,255,.95);
+      box-shadow: 0 0 0 3px rgba(255,255,255,.25);
+      background: rgba(255,255,255,.95);
+    }
+    #searchInput::placeholder { color: var(--teks-muted); }
+
+    /* ── FILTER KATEGORI ──────────────────────── */
+    .filter-wrap {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 20px;
+      animation: fadeUp .45s .15s ease both;
+    }
+    .filter-btn {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(255,255,255,.5);
+      background: rgba(255,255,255,.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-family: inherit;
+      font-size: .8rem;
+      font-weight: 600;
+      color: #fff;
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .filter-btn:hover { background: rgba(255,255,255,.35); border-color: rgba(255,255,255,.8); }
+    .filter-btn.active {
+      background: #fff;
+      border-color: #fff;
+      color: var(--hijau);
+    }
+
+    /* ── SECTION KATEGORI ─────────────────────── */
+    .kategori-section { margin-bottom: 10px; }
+    .kategori-label {
+      font-size: .72rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.9);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      padding-left: 4px;
+      text-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+
+    /* ── LINK GRID ────────────────────────────── */
+    .links-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .link-card {
+      display: flex; flex-direction: row; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      padding: 12px 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      border: 1.5px solid rgba(255,255,255,.7);
+      cursor: pointer;
+      transition: all var(--transition);
+      animation: fadeUp .4s ease both;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+      min-height: unset;
+    }
+    .link-card::after {
+      content: '';
+      position: absolute; left: 0; top: 0; right: 0;
+      height: 3px;
+      background: var(--card-color, var(--hijau));
+      border-radius: var(--radius) var(--radius) 0 0;
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+    .link-card:hover {
+      background: rgba(255,255,255,.95);
+      border-color: rgba(255,255,255,.95);
+      box-shadow: 0 6px 24px rgba(0,0,0,.14);
+      transform: translateY(-2px);
+    }
+    .link-card:hover::after { opacity: 1; }
+
+    .link-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      background: var(--icon-bg, var(--hijau-light));
+    }
+    .link-body { flex: 1; min-width: 0; width: 100%; }
+    .link-title {
+      font-weight: 700;
+      font-size: .78rem;
+      color: var(--teks);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.35;
+      text-align: left;
+    }
+    .link-desc {
+      font-size: .68rem;
+      color: var(--teks-muted);
+      margin-top: 2px;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      line-height: 1.35;
+      text-align: left;
+    }
+    .link-actions {
+      position: absolute;
+      top: 10px; right: 10px;
+      display: flex; gap: 4px;
+    }
+    .btn-qr {
+      width: 28px; height: 28px;
+      border-radius: var(--radius-sm);
+      background: var(--abu-1);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--teks-mid);
+      transition: all var(--transition);
+      font-size: 13px;
+      opacity: 0;
+    }
+    .link-card:hover .btn-qr { opacity: 1; }
+    .btn-qr:hover { background: var(--hijau-light); color: var(--hijau); }
+
+    /* ── QR MODAL ─────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,.5);
+      backdrop-filter: blur(4px);
+      align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--putih);
+      border-radius: 20px;
+      padding: 28px 24px;
+      max-width: 320px; width: 100%;
+      text-align: center;
+      animation: popIn .3s ease both;
+    }
+    .modal-title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .modal-url {
+      font-size: .75rem;
+      color: var(--teks-muted);
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 20px;
+      word-break: break-all;
+    }
+    #qrCanvas { margin: 0 auto; }
+    .modal-close {
+      margin-top: 20px;
+      padding: 10px 28px;
+      background: var(--hijau);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: .9rem;
+      transition: background var(--transition);
+    }
+    .modal-close:hover { background: var(--hijau-mid); }
+
+    /* ── DARK MODE TOGGLE ─────────────────────── */
+    .topbar {
+      display: flex; justify-content: flex-end;
+      margin-bottom: 0;
+      padding: 0 4px;
+      animation: fadeDown .4s ease both;
+    }
+    .btn-theme {
+      width: 36px; height: 36px;
+      border-radius: 999px;
+      background: var(--putih);
+      border: 1.5px solid var(--abu-2);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition);
+    }
+    .btn-theme:hover { border-color: var(--hijau); }
+
+    /* ── EMPTY STATE ──────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--teks-muted);
+    }
+    .empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
+    .empty-state p { font-size: .9rem; }
+
+    /* ── FOOTER ───────────────────────────────── */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: .75rem;
+      color: var(--teks-muted);
+      animation: fadeUp .5s .3s ease both;
+    }
+    .footer a {
+      color: var(--hijau);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* ── ANIMATIONS ───────────────────────────── */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── LOGO PARTNER ─────────────────────────────── */
+    .logo-partner-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin: 0 auto 16px;
+    }
+    .logo-partner-row img {
+      height: 90px; width: auto; object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.12));
+    }
+
+    /* ── BRAND FOOTER ─────────────────────────────── */
+    .brand-footer {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px; margin-top: 20px; padding: 12px 0 60px;
+      opacity: .85;
+    }
+    .brand-footer img { height: 38px; width: auto; object-fit: contain; filter: brightness(0) invert(1); }
+    .brand-footer span { font-size: .7rem; color: rgba(255,255,255,.9); letter-spacing: .3px; text-shadow: 0 1px 4px rgba(0,0,0,.2); }
+
+    /* ── CUSTOM TOAST ─────────────────────────────── */
+    #toastContainer {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+      align-items: center; pointer-events: none;
+    }
+    .toast {
+      background: var(--teks);
+      color: var(--putih);
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-size: .85rem; font-weight: 600;
+      box-shadow: 0 4px 24px rgba(0,0,0,.2);
+      animation: toastIn .28s ease both;
+      pointer-events: auto;
+      white-space: nowrap;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.success { background: var(--hijau); }
+    .toast.error   { background: #dc3545; }
+    .toast.warning { background: #f59e0b; }
+    @keyframes toastIn  { from { opacity:0; transform:translateY(14px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+    @keyframes toastOut { from { opacity:1; transform:translateY(0) scale(1); } to { opacity:0; transform:translateY(6px) scale(.95); } }
+
+    /* ── SKELETON LOADER ──────────────────────── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--abu-2) 25%, var(--abu-1) 50%, var(--abu-2) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 8px;
+    }
+    @keyframes shimmer {
+      from { background-position: 200% 0; }
+      to   { background-position: -200% 0; }
+    }
+    .skel-card {
+      display: flex; flex-direction: column;
+      background: var(--putih);
+      border-radius: var(--radius);
+      padding: 18px 16px 16px;
+      box-shadow: var(--shadow-sm);
+      min-height: 110px;
+    }
+    .skel-icon { width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0; margin-bottom: 12px; }
+    .skel-body { flex: 1; }
+    .skel-title { height: 14px; width: 60%; margin-bottom: 8px; }
+    .skel-desc  { height: 10px; width: 40%; }
+
+    /* ── LOADING BADGE ────────────────────────── */
+    .klik-badge {
+      font-size: .68rem;
+      font-family: 'DM Mono', monospace;
+      background: var(--emas-light);
+      color: var(--emas);
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 900px) {
+      .links-list { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    }
+    @media (max-width: 480px) {
+      .header-nama { font-size: 1rem; }
+      .page-wrap { padding: 16px 12px 60px; }
+      .links-list { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .link-card { padding: 12px 14px; }
+    }
+    @media (max-width: 340px) {
+      .links-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="page-wrap">
+  <div class="topbar">
+    <button class="btn-theme" id="btnTheme" title="Ganti tema"></button>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header" id="siteHeader">
+    <div class="logo-partner-row">
+      <img src="/logokemenkes.png" alt="Kemenkes RI" />
+      <img src="/logobalut.png" alt="Kabupaten Banggai Laut" />
+
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="search" id="searchInput" placeholder="Cari link..." autocomplete="off" />
+  </div>
+
+  <!-- FILTER KATEGORI -->
+  <div class="filter-wrap" id="filterWrap">
+    <button class="filter-btn active" data-id="all">Semua</button>
+  </div>
+
+<div id="linksContainer">
+    <!-- skeleton -->
+    <div class="links-list">
+      <div class="skel-card">
+        <div class="skeleton skel-icon"></div>
+        <div class="skel-body">
+          <div class="skeleton skel-title"></div>
+          <div class="skeleton skel-desc"></div>
+        </div>
+      </div>
+      <div class="skel-card">
+        <div class="skeleton skel-icon"></div>
+        <div class="skel-body">
+          <div class="skeleton skel-title"></div>
+          <div class="skeleton skel-desc"></div>
+        </div>
+      </div>
+      <div class="skel-card">
+        <div class="skeleton skel-icon"></div>
+        <div class="skel-body">
+          <div class="skeleton skel-title"></div>
+          <div class="skeleton skel-desc"></div>
+        </div>
+      </div>
+      <div class="skel-card">
+        <div class="skeleton skel-icon"></div>
+        <div class="skel-body">
+          <div class="skeleton skel-title"></div>
+          <div class="skeleton skel-desc"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer" id="siteFooter" style="display:none">
+    <p id="footerText">© 2026 Dinas Kesehatan PPKB Kabupaten Banggai Laut. All rights reserved.</p>
+  </div>
+</div>
+
+<!-- QR MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal-box">
+    <div class="modal-title" id="qrTitle"></div>
+    <div class="modal-url" id="qrUrl"></div>
+    <div id="qrCanvas"></div>
+    <button class="modal-close" id="qrClose">Tutup</button>
+  </div>
+</div>
+
+<script>
+// ── STATE ─────────────────────────────────────────────
+let allLinks = [];
+let allKategori = [];
+let activeFilter = 'all';
+let searchQuery = '';
+let settings = {};
+
+// ── THEME ─────────────────────────────────────────────
+const btnTheme = document.getElementById('btnTheme');
+const saved = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', saved);
+const SVG_MOON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+const SVG_SUN  = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+btnTheme.innerHTML = saved === 'dark' ? SVG_SUN : SVG_MOON;
+btnTheme.addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+  btnTheme.innerHTML = next === 'dark' ? SVG_SUN : SVG_MOON;
+});
+
+// ── API ───────────────────────────────────────────────
+async function fetchSettings() {
+  try {
+    const r = await fetch('/api/settings');
+    const d = await r.json();
+    settings = d.settings || {};
+    applySettings();
+  } catch {}
+}
+
+async function fetchLinks() {
+  const r = await fetch('/api/links');
+  const d = await r.json();
+  allLinks = d.links || [];
+}
+
+async function fetchKategori() {
+  const r = await fetch('/api/kategori');
+  const d = await r.json();
+  allKategori = d.kategori || [];
+}
+
+function applySettings() {
+  if (settings.nama_instansi) document.getElementById('siteName').textContent = settings.nama_instansi;
+  if (settings.tagline)       document.getElementById('siteTagline').textContent = settings.tagline;
+  if (settings.footer_text)   document.getElementById('footerText').textContent = settings.footer_text;
+  if (settings.warna_primer) {
+    document.documentElement.style.setProperty('--hijau', settings.warna_primer);
+  }
+  if (settings.nama_instansi) {
+    document.title = `Superlink – ${settings.nama_instansi}`;
+  }
+}
+
+// ── RENDER FILTER ─────────────────────────────────────
+function renderFilter() {
+  const wrap = document.getElementById('filterWrap');
+  wrap.innerHTML = `<button class="filter-btn ${activeFilter === 'all' ? 'active' : ''}" data-id="all">Semua</button>`;
+  allKategori.forEach(k => {
+    const btn = document.createElement('button');
+    btn.className = `filter-btn ${activeFilter === String(k.id) ? 'active' : ''}`;
+    btn.dataset.id = k.id;
+    btn.textContent = k.nama;
+    wrap.appendChild(btn);
+  });
+  wrap.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.dataset.id;
+      renderFilter();
+      renderLinks();
+    });
+  });
+}
+
+// ── RENDER LINKS ──────────────────────────────────────
+function getFiltered() {
+  let list = allLinks;
+  if (activeFilter !== 'all') list = list.filter(l => String(l.kategori_id) === activeFilter);
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(l =>
+      l.judul.toLowerCase().includes(q) ||
+      (l.deskripsi || '').toLowerCase().includes(q)
+    );
+  }
+  return list;
+}
+
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function renderLinks() {
+  const container = document.getElementById('linksContainer');
+  const filtered = getFiltered();
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="emoji"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        <p>Tidak ada link yang cocok.</p>
+      </div>`;
+    return;
+  }
+
+  // Grup by kategori
+  if (activeFilter === 'all' && !searchQuery) {
+    // tampilkan per kategori section
+    const grouped = {};
+    const noKat = [];
+    filtered.forEach(l => {
+      if (l.kategori_id) {
+        if (!grouped[l.kategori_id]) grouped[l.kategori_id] = [];
+        grouped[l.kategori_id].push(l);
+      } else {
+        noKat.push(l);
+      }
+    });
+
+    let html = '';
+    allKategori.forEach(k => {
+      const items = grouped[k.id] || [];
+      if (!items.length) return;
+      html += `<div class="kategori-section">
+        <div class="kategori-label">${k.nama}</div>
+        <div class="links-list">${items.map(linkCard).join('')}</div>
+      </div>`;
+    });
+    if (noKat.length) {
+      html += `<div class="kategori-section">
+        <div class="links-list">${noKat.map(linkCard).join('')}</div>
+      </div>`;
+    }
+    container.innerHTML = html;
+  } else {
+    container.innerHTML = `<div class="links-list">${filtered.map(linkCard).join('')}</div>`;
+  }
+
+  // Pasang event listeners
+  container.querySelectorAll('.link-card').forEach(card => {
+    card.addEventListener('click', async (e) => {
+      if (e.target.closest('.btn-qr')) return;
+      const id = card.dataset.id;
+      const url = card.dataset.url;
+      // Track klik
+      try { await fetch(`/api/track/${id}`, { method: 'POST' }); } catch {}
+      window.open(url, '_blank', 'noopener');
+    });
+  });
+
+  container.querySelectorAll('.btn-qr').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.link-card');
+      openQr(card.dataset.url, card.dataset.title);
+    });
+  });
+}
+
+function linkCard(l) {
+  const color = l.warna_ikon || '#0077B6';
+  const bg = hexToRgba(color, 0.12);
+  return `
+  <div class="link-card" data-id="${l.id}" data-url="${escHtml(l.url)}" data-title="${escHtml(l.judul)}"
+    style="--card-color:${color}">
+    <div class="link-actions">
+      <button class="btn-qr" title="QR Code">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/>
+          <line x1="14" y1="14" x2="14" y2="14"/><line x1="17" y1="14" x2="17" y2="14"/>
+          <line x1="20" y1="14" x2="20" y2="14"/><line x1="14" y1="17" x2="14" y2="17"/>
+          <line x1="17" y1="17" x2="17" y2="17"/><line x1="20" y1="20" x2="20" y2="20"/>
+        </svg>
+      </button>
+    </div>
+    <div class="link-icon" style="background:${bg}">
+      <span style="font-size:22px">${l.ikon || '🔗'}</span>
+    </div>
+    <div class="link-body">
+      <div class="link-title">${escHtml(l.judul)}</div>
+      ${l.deskripsi ? `<div class="link-desc">${escHtml(l.deskripsi)}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function escHtml(str) {
+  return String(str || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── QR MODAL ──────────────────────────────────────────
+let qrInstance = null;
+function openQr(url, title) {
+  document.getElementById('qrTitle').textContent = title;
+  document.getElementById('qrUrl').textContent = url;
+  const canvas = document.getElementById('qrCanvas');
+  canvas.innerHTML = '';
+  qrInstance = new QRCode(canvas, {
+    text: url,
+    width: 200, height: 200,
+    colorDark: '#0077B6',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+  document.getElementById('qrModal').classList.add('open');
+}
+document.getElementById('qrClose').addEventListener('click', () => {
+  document.getElementById('qrModal').classList.remove('open');
+});
+document.getElementById('qrModal').addEventListener('click', (e) => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+
+// ── SEARCH ────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  searchQuery = e.target.value.trim();
+  renderLinks();
+});
+
+// ── INIT ──────────────────────────────────────────────
+async function init() {
+  await Promise.all([fetchSettings(), fetchLinks(), fetchKategori()]);
+  renderFilter();
+  renderLinks();
+}
+init();
+</script>
+<!-- BRAND FOOTER -->
+<div class="brand-footer">
+  <img src="/favicon.png" alt="Superlink" />
+  <span>© 2026 Dinas Kesehatan PPKB Kabupaten Banggai Laut. All rights reserved.</span>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<script>
+// ── TOAST SYSTEM ──────────────────────────────────────
+function showToast(message, type = '', duration = 3000) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type ? ' ' + type : '');
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'toastOut .3s ease forwards';
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+</script>
+
+</body>
+</html>

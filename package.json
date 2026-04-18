@@ -1,0 +1,16 @@
+{
+  "name": "superlink-dinkes-banggai-laut",
+  "version": "1.0.0",
+  "description": "Superlink resmi Dinas Kesehatan Kabupaten Banggai Laut",
+  "scripts": {
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
+  }
+}

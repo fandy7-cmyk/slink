@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SLINK DINKESPPKB</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --hijau:       #0077B6;
+      --hijau-mid:   #00B4D8;
+      --hijau-light: #e0f4f8;
+      --emas:        #48CAE4;
+      --merah:       #dc3545;
+      --merah-light: #fff0f0;
+      --putih:       #ffffff;
+      --abu-1:       #f0f8fb;
+      --abu-2:       #d0ecf3;
+      --abu-3:       #90c4d4;
+      --teks:        #0d2d3a;
+      --teks-mid:    #2a6070;
+      --teks-muted:  #6a9aaa;
+      --shadow-sm:   0 1px 4px rgba(0,119,182,.08);
+      --shadow-md:   0 4px 20px rgba(0,119,182,.14);
+      --radius:      12px;
+      --radius-sm:   8px;
+      --transition:  .2s cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: url('/bg.jpg') center center / cover fixed no-repeat; color: var(--teks); min-height: 100vh; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background: linear-gradient(135deg, rgba(0,119,182,.80) 0%, rgba(0,180,216,.75) 50%, rgba(0,137,77,.78) 100%);
+      pointer-events: none;
+    }
+
+    /* ── LOGIN PAGE ─────────────────────────────── */
+    #loginPage {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 20px;
+      background: transparent;
+      position: relative; z-index: 1;
+    }
+    .login-box {
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 40px 32px;
+      width: 100%; max-width: 400px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.15);
+      border: 1.5px solid rgba(255,255,255,.7);
+      animation: popIn .35s ease both;
+    }
+    .login-logo { text-align: center; margin-bottom: 24px; }
+    .login-logo .icon { font-size: 48px; }
+    .login-title { font-size: 1.3rem; font-weight: 800; color: var(--hijau); margin-top: 8px; }
+    .login-sub { font-size: .82rem; color: var(--teks-muted); }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: .82rem; font-weight: 600; color: var(--teks-mid); margin-bottom: 6px; }
+    input[type="email"], input[type="password"], input[type="text"], input[type="url"], input[type="number"], select, textarea {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--abu-2);
+      border-radius: var(--radius-sm);
+      font-family: inherit; font-size: .92rem; color: var(--teks);
+      background: var(--putih);
+      transition: border-color var(--transition), box-shadow var(--transition);
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--hijau);
+      box-shadow: 0 0 0 3px rgba(0,119,182,.1);
+    }
+    textarea { resize: vertical; min-height: 72px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px; border-radius: var(--radius-sm);
+      font-family: inherit; font-weight: 700; font-size: .9rem;
+      cursor: pointer; border: none; transition: all var(--transition);
+    }
+    .btn-primary { background: var(--hijau); color: #fff; }
+    .btn-primary:hover { background: var(--hijau-mid); }
+    .btn-danger  { background: var(--merah-light); color: var(--merah); }
+    .btn-danger:hover  { background: var(--merah); color: #fff; }
+    .btn-ghost   { background: var(--abu-1); color: var(--teks-mid); }
+    .btn-ghost:hover { background: var(--abu-2); }
+    .btn-full { width: 100%; justify-content: center; }
+    .btn-sm { padding: 6px 12px; font-size: .8rem; }
+    #loginError { color: var(--merah); font-size: .82rem; margin-top: 8px; display: none; }
+
+    /* ── ADMIN LAYOUT ───────────────────────────── */
+    #adminPage { display: none; position: relative; z-index: 1; }
+    .admin-nav {
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1.5px solid rgba(255,255,255,.6);
+      padding: 0 24px;
+      display: flex; align-items: center; gap: 0;
+      position: sticky; top: 0; z-index: 50;
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    .nav-brand {
+      font-weight: 800; font-size: .95rem; color: var(--hijau);
+      padding: 16px 0; margin-right: 24px; white-space: nowrap;
+    }
+    .nav-tabs { display: flex; gap: 0; flex: 1; }
+    .nav-tab {
+      padding: 18px 16px 16px;
+      border-bottom: 2px solid transparent;
+      font-weight: 600; font-size: .85rem;
+      color: var(--teks-muted); cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+    }
+    .nav-tab:hover { color: var(--hijau); }
+    .nav-tab.active { color: var(--hijau); border-bottom-color: var(--hijau); }
+    .nav-end { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+    .nav-user { font-size: .8rem; color: var(--teks-muted); }
+    .btn-logout {
+      padding: 6px 14px; border-radius: 999px;
+      background: var(--abu-1); border: 1.5px solid var(--abu-2);
+      font-family: inherit; font-size: .8rem; font-weight: 600;
+      color: var(--merah); cursor: pointer;
+      transition: all var(--transition);
+    }
+    .btn-logout:hover { background: var(--merah-light); border-color: var(--merah); }
+
+    .admin-content { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
+
+    /* ── TABS ───────────────────────────────────── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeUp .3s ease both; }
+
+    /* ── STAT CARDS ─────────────────────────────── */
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-bottom: 24px; }
+    .stat-card {
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      border: 1.5px solid rgba(255,255,255,.7);
+      padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    }
+    .stat-label { font-size: .75rem; color: var(--teks-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: var(--hijau); font-family: 'DM Mono', monospace; margin-top: 4px; }
+    .stat-sub   { font-size: .75rem; color: var(--teks-muted); margin-top: 2px; }
+
+    /* ── TABLE ──────────────────────────────────── */
+    .card {
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      border: 1.5px solid rgba(255,255,255,.7);
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      overflow: hidden;
+    }
+    .card-header {
+      padding: 16px 20px; display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1.5px solid rgba(255,255,255,.5);
+    }
+    .card-title { font-weight: 700; font-size: .95rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th { padding: 10px 16px; text-align: left; font-size: .75rem; font-weight: 700; color: var(--teks-muted); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1.5px solid var(--abu-2); background: rgba(240,248,251,.6); }
+    td { padding: 12px 16px; border-bottom: 1px solid var(--abu-2); font-size: .88rem; vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(224,244,248,.4); }
+    .td-actions { display: flex; gap: 6px; }
+
+    /* ── BADGE ──────────────────────────────────── */
+    .badge {
+      display: inline-block; padding: 3px 10px;
+      border-radius: 999px; font-size: .72rem; font-weight: 700;
+    }
+    .badge-green  { background: var(--hijau-light); color: var(--hijau); }
+    .badge-gray   { background: var(--abu-1); color: var(--teks-muted); }
+    .badge-gold   { background: var(--emas-light, #fef9ec); color: var(--emas); }
+
+    /* ── MODAL ──────────────────────────────────── */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 100;
+      background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--putih); border-radius: 18px;
+      padding: 28px 24px; max-width: 480px; width: 100%;
+      max-height: 90vh; overflow-y: auto;
+      animation: popIn .3s ease both;
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title-text { font-weight: 800; font-size: 1.05rem; }
+    .btn-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--teks-muted); line-height: 1; }
+    .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+    /* ── IKON PICKER ────────────────────────────── */
+    .ikon-grid {
+      display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-top: 8px;
+    }
+    .ikon-btn {
+      aspect-ratio: 1; border-radius: 8px; border: 1.5px solid var(--abu-2);
+      background: none; font-size: 18px; cursor: pointer; transition: all var(--transition);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ikon-btn:hover { background: var(--hijau-light); border-color: var(--hijau); }
+    .ikon-btn.selected { background: var(--hijau-light); border-color: var(--hijau); }
+
+    /* ── TOP LINKS TABLE ────────────────────────── */
+    .rank { font-family: 'DM Mono', monospace; color: var(--teks-muted); font-size: .8rem; }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes popIn  { from { opacity:0; transform:scale(.94); } to { opacity:1; transform:scale(1); } }
+
+    .empty-row td { text-align: center; color: var(--teks-muted); padding: 32px; }
+
+    .color-swatch {
+      width: 24px; height: 24px; border-radius: 6px;
+      border: 1.5px solid var(--abu-2); cursor: pointer;
+      display: inline-block;
+    }
+    input[type="color"] { width: 32px; height: 32px; padding: 0; border: none; cursor: pointer; }
+
+    @media (max-width: 640px) {
+      .admin-nav { padding: 0 12px; }
+      .nav-brand { font-size: .82rem; margin-right: 12px; }
+      .nav-tab { padding: 14px 10px 12px; font-size: .78rem; }
+      .admin-content { padding: 16px 12px; }
+      .stat-value { font-size: 1.5rem; }
+      th, td { padding: 8px 10px; }
+    }
+
+    /* ── CUSTOM TOAST ─────────────────────────────── */
+    #toastContainer {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      z-index: 9999; display: flex; flex-direction: column; gap: 8px;
+      align-items: center; pointer-events: none;
+    }
+    .toast {
+      background: var(--teks);
+      color: #fff;
+      padding: 11px 22px;
+      border-radius: 999px;
+      font-size: .85rem; font-weight: 600;
+      box-shadow: 0 4px 24px rgba(0,0,0,.2);
+      animation: toastIn .28s ease both;
+      pointer-events: auto;
+      white-space: nowrap;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.success { background: var(--hijau); }
+    .toast.error   { background: var(--merah); }
+    @keyframes toastIn  { from { opacity:0; transform:translateY(14px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
+    @keyframes toastOut { from { opacity:1; } to { opacity:0; transform:translateY(6px) scale(.95); } }
+
+    /* ── SPINNER ──────────────────────────────────── */
+    .spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2.5px solid rgba(255,255,255,.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── CUSTOM CONFIRM DIALOG ────────────────────── */
+    #confirmOverlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,.45); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 20px;
+    }
+    #confirmOverlay.open { display: flex; }
+    .confirm-box {
+      background: var(--putih); border-radius: 18px;
+      padding: 28px 24px; max-width: 360px; width: 100%;
+      text-align: center; animation: popIn .3s ease both;
+      box-shadow: 0 8px 40px rgba(0,0,0,.18);
+    }
+    .confirm-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .confirm-msg  { font-size: .95rem; font-weight: 600; color: var(--teks); line-height: 1.5; margin-bottom: 20px; }
+    .confirm-actions { display: flex; gap: 10px; justify-content: center; }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ─────────────────────────────────────── -->
+<div id="loginPage">
+  <div class="login-box">
+    <div class="login-logo">
+      <img src="/favicon.png" alt="Logo" style="width:64px;height:64px;object-fit:contain" />
+      <div class="login-title">Superlink</div>
+      <div class="login-sub">Dinas Kesehatan PPKB Kab. Banggai Laut</div>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="admin@dinkesbl.go.id" autocomplete="email" />
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <div id="loginError">Email atau password salah.</div>
+    <button class="btn btn-primary btn-full" id="btnLogin" style="margin-top:8px">Masuk</button>
+  </div>
+</div>
+
+<!-- ── ADMIN DASHBOARD ────────────────────────────── -->
+<div id="adminPage">
+  <nav class="admin-nav">
+    <div class="nav-brand"><img src="/favicon.png" alt="Logo" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;margin-right:6px"> Superlink Admin</div>
+    <div class="nav-tabs">
+      <div class="nav-tab active" data-tab="dashboard">Dashboard</div>
+      <div class="nav-tab" data-tab="links">Link</div>
+      <div class="nav-tab" data-tab="kategori">Kategori</div>
+      <div class="nav-tab" data-tab="bundle">Bundle</div>
+      <div class="nav-tab" data-tab="shortlink">Short Link</div>
+      <div class="nav-tab" data-tab="settings">Settings</div>
+      <div class="nav-tab" data-tab="admin">Admin</div>
+    </div>
+    <div class="nav-end">
+      <span class="nav-user" id="navUser"></span>
+      <button class="btn-logout" id="btnLogout">Keluar</button>
+    </div>
+  </nav>
+
+  <div class="admin-content">
+
+    <!-- TAB: DASHBOARD -->
+    <div class="tab-panel active" id="tab-dashboard">
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-card"><div class="stat-label">Total Klik</div><div class="stat-value" id="statTotalKlik">–</div></div>
+        <div class="stat-card"><div class="stat-label">Klik Hari Ini</div><div class="stat-value" id="statKlikHariIni">–</div></div>
+        <div class="stat-card"><div class="stat-label">Link Aktif</div><div class="stat-value" id="statTotalLinks">–</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Top Link</div></div>
+        <table>
+          <thead><tr><th>#</th><th>Judul</th><th>Klik</th></tr></thead>
+          <tbody id="topLinksBody"><tr class="empty-row"><td colspan="3">Memuat data...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: LINKS -->
+    <div class="tab-panel" id="tab-links">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Kelola Link</div>
+          <button class="btn btn-primary btn-sm" id="btnTambahLink">+ Tambah Link</button>
+        </div>
+        <div style="overflow-x:auto">
+          <table>
+            <thead><tr><th>Ikon</th><th>Judul</th><th>Kategori</th><th>Short Link</th><th>Klik</th><th>Status</th><th>Aksi</th></tr></thead>
+            <tbody id="linksTableBody"><tr class="empty-row"><td colspan="7">Memuat data...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: KATEGORI -->
+    <div class="tab-panel" id="tab-kategori">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Kelola Kategori</div>
+          <button class="btn btn-primary btn-sm" id="btnTambahKategori">+ Tambah Kategori</button>
+        </div>
+        <table>
+          <thead><tr><th>Nama</th><th>Urutan</th><th>Jumlah Link</th><th>Aksi</th></tr></thead>
+          <tbody id="kategoriTableBody"><tr class="empty-row"><td colspan="4">Memuat data...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: BUNDLE -->
+    <div class="tab-panel" id="tab-bundle">
+
+      <!-- Daftar Bundle -->
+      <div id="bundleListView">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:5px"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>Kelola Bundle Link</div>
+            <button class="btn btn-primary btn-sm" id="btnTambahBundle">+ Buat Bundle</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr><th>Judul</th><th>Slug / URL</th><th>Isi</th><th>Status</th><th>Aksi</th></tr></thead>
+              <tbody id="bundleTableBody"><tr class="empty-row"><td colspan="5">Memuat data...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail / Edit Bundle + kelola items -->
+      <div id="bundleDetailView" style="display:none">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+          <button class="btn btn-ghost btn-sm" id="btnBackBundle"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Kembali</button>
+          <span style="font-weight:700;font-size:1rem" id="bundleDetailTitle">Bundle</span>
+        </div>
+
+        <!-- Info Bundle -->
+        <div class="card" style="padding:20px;margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div class="card-title" style="font-size:.9rem"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Info Bundle</div>
+            <button class="btn btn-ghost btn-sm" id="btnEditBundleInfo">Edit Info</button>
+          </div>
+          <div id="bundleInfoDisplay"></div>
+          <!-- URL share -->
+          <div id="bundleShareRow" style="margin-top:14px;padding:10px 14px;background:var(--abu-1);border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px">
+            <span style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--teks-mid);flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" id="bundleShareUrl"></span>
+            <button class="btn btn-ghost btn-sm" id="btnCopyBundleUrl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Salin</button>
+            <a class="btn btn-primary btn-sm" id="btnOpenBundle" href="#" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Buka</a>
+          </div>
+        </div>
+
+        <!-- Items -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Link dalam Bundle</div>
+            <button class="btn btn-primary btn-sm" id="btnTambahBundleItem">+ Tambah Link</button>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead><tr><th>Ikon</th><th>Judul</th><th>URL</th><th>Aksi</th></tr></thead>
+              <tbody id="bundleItemsBody"><tr class="empty-row"><td colspan="4">Belum ada link.</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: ADMIN -->
+    <div class="tab-panel" id="tab-admin">
+      <div class="card" style="padding:24px;max-width:480px">
+        <div class="card-title" style="margin-bottom:20px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Tambah Admin Baru</div>
+        <p style="font-size:.85rem;color:var(--teks-muted);margin-bottom:20px;line-height:1.6">
+          Daftarkan akun admin baru. Setiap akun bisa login ke panel ini dan mengelola semua data.
+        </p>
+        <div class="form-group">
+          <label>Nama Lengkap <span style="color:var(--merah)">*</span></label>
+          <input type="text" id="aNewNama" placeholder="Contoh: Budi Santoso" />
+        </div>
+        <div class="form-group">
+          <label>Email <span style="color:var(--merah)">*</span></label>
+          <input type="email" id="aNewEmail" placeholder="admin@dinkesbl.go.id" />
+        </div>
+        <div class="form-group">
+          <label>Password <span style="color:var(--merah)">*</span></label>
+          <input type="password" id="aNewPassword" placeholder="Minimal 8 karakter" />
+        </div>
+        <div class="form-group">
+          <label>Konfirmasi Password <span style="color:var(--merah)">*</span></label>
+          <input type="password" id="aNewPassword2" placeholder="Ulangi password" />
+        </div>
+        <div class="form-group">
+          <label>Setup Key <span style="color:var(--merah)">*</span></label>
+          <input type="password" id="aSetupKey" placeholder="Kunci setup dari .env" />
+          <div style="font-size:.75rem;color:var(--teks-muted);margin-top:4px">Nilai <code>SETUP_KEY</code> dari environment variable Netlify.</div>
+        </div>
+        <div id="adminRegError" style="color:var(--merah);font-size:.82rem;display:none;margin-bottom:12px"></div>
+        <div id="adminRegSuccess" style="color:var(--hijau);font-size:.82rem;display:none;margin-bottom:12px"></div>
+        <button class="btn btn-primary" id="btnRegisterAdmin">Daftarkan Admin</button>
+      </div>
+    </div>
+
+    <!-- TAB: SHORT LINK -->
+    <div class="tab-panel" id="tab-shortlink">
+
+      <!-- STAT ROW -->
+      <div class="stat-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:20px">
+        <div class="stat-card"><div class="stat-label">Total Short Link</div><div class="stat-value" id="slStatTotal">–</div></div>
+        <div class="stat-card"><div class="stat-label">Total Klik</div><div class="stat-value" id="slStatKlik">–</div></div>
+        <div class="stat-card"><div class="stat-label">Paling Populer</div><div class="stat-value" style="font-size:1rem;padding-top:6px" id="slStatTop">–</div></div>
+      </div>
+
+      <!-- TABLE CARD -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Kelola Short Link</div>
+          <button class="btn btn-primary btn-sm" id="btnTambahShortLink">+ Buat Short Link</button>
+        </div>
+
+        <!-- SEARCH -->
+        <div style="padding:12px 16px;border-bottom:1.5px solid var(--abu-2)">
+          <input type="text" id="slSearch" placeholder="Cari slug atau judul..." style="max-width:320px;padding:8px 12px;font-size:.85rem" oninput="filterShortLinks()" />
+        </div>
+
+        <div style="overflow-x:auto">
+          <table>
+            <thead>
+              <tr>
+                <th>Short Link</th>
+                <th>Judul / URL Tujuan</th>
+                <th>Klik</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="shortLinkTableBody">
+              <tr class="empty-row"><td colspan="5">Memuat data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: SETTINGS -->
+    <div class="tab-panel" id="tab-settings">
+      <div class="card" style="padding:24px">
+        <div class="card-title" style="margin-bottom:20px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Pengaturan Halaman</div>
+        <div class="form-group">
+          <label>Nama Instansi</label>
+          <input type="text" id="sNamaInstansi" />
+        </div>
+        <div class="form-group">
+          <label>Tagline</label>
+          <input type="text" id="sTagline" />
+        </div>
+        <div class="form-group">
+          <label>URL Logo (opsional)</label>
+          <input type="url" id="sLogoUrl" placeholder="https://..." />
+        </div>
+        <div class="form-group">
+          <label>Teks Footer</label>
+          <input type="text" id="sFooterText" />
+        </div>
+        <div class="form-group">
+          <label>Warna Primer</label>
+          <div style="display:flex;gap:10px;align-items:center">
+            <input type="color" id="sWarnaPrimer" value="#0077B6" />
+            <span id="warnaLabel" style="font-family:'DM Mono',monospace;font-size:.85rem">#0077B6</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" id="btnSaveSettings">Simpan Pengaturan</button>
+        <div id="settingsFeedback" style="margin-top:10px;font-size:.85rem;display:none"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── MODAL LINK ──────────────────────────────────── -->
+<div class="modal-overlay" id="modalLink">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title-text" id="modalLinkTitle">Tambah Link</div>
+      <button class="btn-close" id="closeLinkModal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="form-group">
+      <label>Judul <span style="color:var(--merah)">*</span></label>
+      <input type="text" id="fJudul" placeholder="Contoh: Profil Puskesmas" />
+    </div>
+    <div class="form-group">
+      <label>URL <span style="color:var(--merah)">*</span></label>
+      <input type="url" id="fUrl" placeholder="https://..." />
+    </div>
+    <div class="form-group">
+      <label>Deskripsi (opsional)</label>
+      <textarea id="fDeskripsi" rows="2" placeholder="Keterangan singkat..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Kategori</label>
+      <select id="fKategori"><option value="">– Tanpa Kategori –</option></select>
+    </div>
+    <div class="form-group">
+      <label>Ikon (pilih emoji)</label>
+      <input type="text" id="fIkon" placeholder="🔗" style="width:80px;text-align:center;font-size:1.2rem" maxlength="4" />
+      <div class="ikon-grid" id="ikonGrid"></div>
+    </div>
+    <div class="form-group">
+      <label>Warna Ikon</label>
+      <div style="display:flex;gap:10px;align-items:center">
+        <input type="color" id="fWarna" value="#0077B6" />
+        <span id="fWarnaLabel" style="font-family:'DM Mono',monospace;font-size:.85rem">#0077B6</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Short Link <span style="color:var(--teks-muted);font-weight:400">(opsional)</span></label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap;font-family:'DM Mono',monospace">/</span>
+        <input type="text" id="fSlugPendek" placeholder="contoh: dokumen2026"
+          style="font-family:'DM Mono',monospace"
+          oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9\-]/g,'')" />
+      </div>
+      <div style="font-size:.75rem;color:var(--teks-muted);margin-top:4px">
+        Hanya huruf kecil, angka, dan tanda hubung. Kosongkan jika tidak perlu short link.
+      </div>
+      <div id="shortLinkPreview" style="display:none;margin-top:6px;padding:8px 12px;background:var(--hijau-light);border-radius:8px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--hijau)"></div>
+    </div>
+    <div class="form-group">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="fAktif" checked style="width:auto" />
+        Tampilkan di halaman publik
+      </label>
+    </div>
+    <div id="linkError" style="color:var(--merah);font-size:.82rem;display:none;margin-top:4px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelLinkModal">Batal</button>
+      <button class="btn btn-primary" id="saveLinkBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL KATEGORI ──────────────────────────────── -->
+<div class="modal-overlay" id="modalKategori">
+  <div class="modal-box" style="max-width:360px">
+    <div class="modal-header">
+      <div class="modal-title-text" id="modalKatTitle">Tambah Kategori</div>
+      <button class="btn-close" id="closeKatModal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="form-group">
+      <label>Nama Kategori</label>
+      <input type="text" id="kNama" placeholder="Contoh: Layanan Informasi" />
+    </div>
+    <div class="form-group">
+      <label>Urutan</label>
+      <input type="number" id="kUrutan" value="0" min="0" style="width:100px" />
+    </div>
+    <div id="katError" style="color:var(--merah);font-size:.82rem;display:none;margin-top:4px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelKatModal">Batal</button>
+      <button class="btn btn-primary" id="saveKatBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL BUNDLE INFO ───────────────────────────── -->
+<div class="modal-overlay" id="modalBundle">
+  <div class="modal-box" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title-text" id="modalBundleTitle">Buat Bundle</div>
+      <button class="btn-close" id="closeBundleModal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="form-group">
+      <label>Judul Bundle <span style="color:var(--merah)">*</span></label>
+      <input type="text" id="bJudul" placeholder="Contoh: Dokumen Rapat Triwulan" />
+    </div>
+    <div class="form-group">
+      <label>Deskripsi (opsional)</label>
+      <textarea id="bDeskripsi" rows="2" placeholder="Keterangan singkat bundle ini..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Slug URL</label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap">/bundle/</span>
+        <input type="text" id="bSlug" placeholder="otomatis dari judul" />
+      </div>
+      <div style="font-size:.75rem;color:var(--teks-muted);margin-top:4px">Hanya huruf kecil, angka, dan tanda hubung. Kosongkan = otomatis.</div>
+    </div>
+    <div class="form-group">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="bAktif" checked style="width:auto" />
+        Bundle aktif (dapat diakses publik)
+      </label>
+    </div>
+    <div id="bundleError" style="color:var(--merah);font-size:.82rem;display:none;margin-top:4px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelBundleModal">Batal</button>
+      <button class="btn btn-primary" id="saveBundleBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL BUNDLE ITEM ────────────────────────────── -->
+<div class="modal-overlay" id="modalBundleItem">
+  <div class="modal-box" style="max-width:440px">
+    <div class="modal-header">
+      <div class="modal-title-text" id="modalBundleItemTitle">Tambah Link</div>
+      <button class="btn-close" id="closeBundleItemModal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="form-group">
+      <label>Judul <span style="color:var(--merah)">*</span></label>
+      <input type="text" id="biJudul" placeholder="Contoh: Notulen Rapat 2024" />
+    </div>
+    <div class="form-group">
+      <label>URL <span style="color:var(--merah)">*</span></label>
+      <input type="url" id="biUrl" placeholder="https://..." />
+    </div>
+    <div class="form-group">
+      <label>Deskripsi (opsional)</label>
+      <input type="text" id="biDeskripsi" placeholder="Keterangan singkat..." />
+    </div>
+    <div class="form-group">
+      <label>Ikon</label>
+      <input type="text" id="biIkon" value="🔗" style="width:70px;text-align:center;font-size:1.2rem" maxlength="4" />
+    </div>
+    <div class="form-group">
+      <label>Urutan</label>
+      <input type="number" id="biUrutan" value="0" min="0" style="width:100px" />
+    </div>
+    <div id="bundleItemError" style="color:var(--merah);font-size:.82rem;display:none;margin-top:4px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelBundleItemModal">Batal</button>
+      <button class="btn btn-primary" id="saveBundleItemBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL SHORT LINK ─────────────────────────────── -->
+<div class="modal-overlay" id="modalShortLink">
+  <div class="modal-box" style="max-width:480px">
+    <div class="modal-header">
+      <div class="modal-title-text" id="modalSLTitle">Buat Short Link</div>
+      <button class="btn-close" id="closeSLModal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+
+    <!-- MODE TOGGLE -->
+    <div id="slModeToggle" style="display:flex;gap:8px;margin-bottom:20px">
+      <button class="btn btn-primary btn-sm" id="slModeNewBtn" onclick="setSLMode('new')">URL Baru</button>
+      <button class="btn btn-ghost btn-sm" id="slModeExistBtn" onclick="setSLMode('existing')">Dari Link yang Ada</button>
+    </div>
+
+    <!-- PILIH LINK YANG ADA -->
+    <div id="slExistingGroup" style="display:none">
+      <div class="form-group">
+        <label>Pilih Link <span style="color:var(--merah)">*</span></label>
+        <select id="slLinkSelect" onchange="onSLLinkSelect()">
+          <option value="">– Pilih link –</option>
+        </select>
+        <div style="font-size:.75rem;color:var(--teks-muted);margin-top:4px">Hanya link yang belum punya short link yang ditampilkan.</div>
+      </div>
+      <div id="slExistingPreview" style="display:none;padding:10px 14px;background:var(--abu-1);border-radius:var(--radius-sm);margin-bottom:16px;font-size:.82rem;color:var(--teks-mid)"></div>
+    </div>
+
+    <!-- JUDUL + URL (mode baru) -->
+    <div id="slNewGroup">
+      <div class="form-group">
+        <label>Judul <span style="color:var(--merah)">*</span></label>
+        <input type="text" id="slJudul" placeholder="Contoh: Formulir Pendataan 2026" />
+      </div>
+      <div class="form-group">
+        <label>URL Tujuan <span style="color:var(--merah)">*</span></label>
+        <input type="url" id="slUrl" placeholder="https://..." />
+      </div>
+    </div>
+
+    <!-- SLUG -->
+    <div class="form-group">
+      <label>Slug Short Link <span style="color:var(--merah)">*</span></label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap;font-family:'DM Mono',monospace">/</span>
+        <input type="text" id="slSlug" placeholder="contoh: form2026"
+          style="font-family:'DM Mono',monospace"
+          oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9\-]/g,'');updateSLPreview()" />
+      </div>
+      <div id="slPreviewBox" style="display:none;margin-top:8px;padding:8px 12px;background:var(--hijau-light);border-radius:8px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--hijau)"></div>
+    </div>
+
+    <!-- AKTIF -->
+    <div class="form-group">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="slAktif" checked style="width:auto" />
+        Short link aktif (bisa diakses publik)
+      </label>
+    </div>
+
+    <div id="slError" style="color:var(--merah);font-size:.82rem;display:none;margin-top:4px"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="cancelSLModal">Batal</button>
+      <button class="btn btn-primary" id="saveSLBtn">Simpan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONSTANTS ────────────────────────────────────────
+const IKON_LIST = ['🔗','🏥','💊','🩺','📋','📄','📊','📞','📱','🌐','🗂️','📢','🎯','🏛️','👨‍⚕️','👩‍⚕️','🚑','💉','🩹','❤️','🌿','📍','✅','📬','🔔','📰','🧪','🔬','🏃','👶','🤰','🧓','🧒','🦷','👁️','🫀','🫁','🧠','💪','🌡️'];
+
+// ── STATE ────────────────────────────────────────────
+let token = localStorage.getItem('sl_token') || '';
+let adminInfo = JSON.parse(localStorage.getItem('sl_admin') || 'null');
+let allLinks = [];
+let allKategori = [];
+let editLinkId = null;
+let editKatId = null;
+let allBundles = [];
+let currentBundleId = null;
+let currentBundleItems = [];
+let editBundleId = null;
+let editBundleItemId = null;
+
+// ── INIT ─────────────────────────────────────────────
+if (token && adminInfo) showAdmin();
+buildIkonGrid();
+
+// ── AUTH ─────────────────────────────────────────────
+document.getElementById('btnLogin').addEventListener('click', doLogin);
+document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('btnLogout').addEventListener('click', async () => {
+  const ok = await showConfirm('Yakin ingin keluar dari panel admin?', '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>', 'Keluar');
+  if (!ok) return;
+  token = ''; adminInfo = null;
+  localStorage.removeItem('sl_token');
+  localStorage.removeItem('sl_admin');
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('loginPage').style.display = 'flex';
+});
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  const btn = document.getElementById('btnLogin');
+  errEl.style.display = 'none';
+
+  // Tampilkan spinner
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Memproses...';
+
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      errEl.textContent = d.error || 'Login gagal';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      btn.innerHTML = 'Masuk';
+      return;
+    }
+    token = d.token;
+    adminInfo = d.admin;
+    localStorage.setItem('sl_token', token);
+    localStorage.setItem('sl_admin', JSON.stringify(adminInfo));
+    showAdmin();
+  } catch {
+    errEl.textContent = 'Koneksi gagal. Coba lagi.';
+    errEl.style.display = 'block';
+    btn.disabled = false;
+    btn.innerHTML = 'Masuk';
+  }
+}
+
+function showAdmin() {
+  document.getElementById('loginPage').style.display = 'none';
+  document.getElementById('adminPage').style.display = 'block';
+  document.getElementById('navUser').textContent = adminInfo?.nama || '';
+  loadDashboard();
+  loadLinks();
+  loadKategori();
+  loadSettings();
+  loadBundles();
+  loadShortLinks();
+}
+
+function authHeaders() {
+  return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+}
+
+// ── TABS ─────────────────────────────────────────────
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(`tab-${tab.dataset.tab}`).classList.add('active');
+  });
+});
+
+// ── DASHBOARD ────────────────────────────────────────
+async function loadDashboard() {
+  try {
+    const r = await fetch('/api/stats', { headers: authHeaders() });
+    const d = await r.json();
+    document.getElementById('statTotalKlik').textContent = d.total_klik?.toLocaleString('id') ?? '–';
+    document.getElementById('statKlikHariIni').textContent = d.klik_hari_ini?.toLocaleString('id') ?? '–';
+    document.getElementById('statTotalLinks').textContent = d.total_links ?? '–';
+    const tbody = document.getElementById('topLinksBody');
+    if (!d.top_links?.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="3">Belum ada data klik</td></tr>';
+    } else {
+      tbody.innerHTML = d.top_links.map((l, i) => `
+        <tr>
+          <td class="rank">${i+1}</td>
+          <td>${esc(l.ikon||'🔗')} ${esc(l.judul)}</td>
+          <td><span class="badge badge-gold">${l.total_klik} klik</span></td>
+        </tr>`).join('');
+    }
+  } catch {}
+}
+
+// ── LINKS ────────────────────────────────────────────
+async function loadLinks() {
+  const r = await fetch('/api/links', { headers: authHeaders() });
+  const d = await r.json();
+  allLinks = d.links || [];
+  renderLinksTable();
+}
+
+function renderLinksTable() {
+  const tbody = document.getElementById('linksTableBody');
+  if (!allLinks.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Belum ada link. Tambah sekarang!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = allLinks.map(l => `
+    <tr>
+      <td style="font-size:1.3rem">${esc(l.ikon||'🔗')}</td>
+      <td>
+        <strong>${esc(l.judul)}</strong><br>
+        <small style="font-family:'DM Mono',monospace;color:var(--teks-muted);font-size:.72rem">${esc(l.url.substring(0,40))}${l.url.length>40?'…':''}</small>
+      </td>
+      <td>${l.kategori_nama ? `<span class="badge badge-green">${esc(l.kategori_nama)}</span>` : '<span class="badge badge-gray">–</span>'}</td>
+      <td style="font-family:'DM Mono',monospace;font-size:.78rem">
+        ${l.slug_pendek
+          ? `<a href="/${esc(l.slug_pendek)}" target="_blank" style="color:var(--hijau);text-decoration:none" title="Buka short link">/${esc(l.slug_pendek)} 🔗</a>`
+          : '<span style="color:var(--teks-muted)">–</span>'
+        }
+      </td>
+      <td style="font-family:'DM Mono',monospace">${l.total_klik ?? 0}</td>
+      <td>${l.aktif ? '<span class="badge badge-green">Aktif</span>' : '<span class="badge badge-gray">Nonaktif</span>'}</td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openEditLink(${l.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusLink(${l.id})">Hapus</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ── MODAL LINK ────────────────────────────────────────
+document.getElementById('btnTambahLink').addEventListener('click', () => openLinkModal());
+document.getElementById('closeLinkModal').addEventListener('click', closeLinkModal);
+document.getElementById('cancelLinkModal').addEventListener('click', closeLinkModal);
+document.getElementById('saveLinkBtn').addEventListener('click', saveLink);
+
+function openLinkModal(id = null) {
+  editLinkId = id;
+  document.getElementById('modalLinkTitle').textContent = id ? 'Edit Link' : 'Tambah Link';
+  document.getElementById('linkError').style.display = 'none';
+
+  // populate kategori dropdown
+  const sel = document.getElementById('fKategori');
+  sel.innerHTML = '<option value="">– Tanpa Kategori –</option>' +
+    allKategori.map(k => `<option value="${k.id}">${esc(k.nama)}</option>`).join('');
+
+  if (id) {
+    const l = allLinks.find(x => x.id === id);
+    if (!l) return;
+    document.getElementById('fJudul').value = l.judul;
+    document.getElementById('fUrl').value = l.url;
+    document.getElementById('fDeskripsi').value = l.deskripsi || '';
+    document.getElementById('fKategori').value = l.kategori_id || '';
+    document.getElementById('fIkon').value = l.ikon || '🔗';
+    document.getElementById('fWarna').value = l.warna_ikon || '#0077B6';
+    document.getElementById('fWarnaLabel').textContent = l.warna_ikon || '#0077B6';
+    document.getElementById('fAktif').checked = l.aktif !== false;
+    document.getElementById('fSlugPendek').value = l.slug_pendek || '';
+    updateShortLinkPreview(l.slug_pendek || '');
+    highlightIkon(l.ikon);
+  } else {
+    document.getElementById('fJudul').value = '';
+    document.getElementById('fUrl').value = '';
+    document.getElementById('fDeskripsi').value = '';
+    document.getElementById('fKategori').value = '';
+    document.getElementById('fIkon').value = '🔗';
+    document.getElementById('fWarna').value = '#0077B6';
+    document.getElementById('fWarnaLabel').textContent = '#0077B6';
+    document.getElementById('fAktif').checked = true;
+    document.getElementById('fSlugPendek').value = '';
+    updateShortLinkPreview('');
+    highlightIkon('🔗');
+  }
+  document.getElementById('modalLink').classList.add('open');
+}
+function closeLinkModal() { document.getElementById('modalLink').classList.remove('open'); }
+function openEditLink(id) { openLinkModal(id); }
+
+async function saveLink() {
+  const errEl = document.getElementById('linkError');
+  errEl.style.display = 'none';
+  const judul = document.getElementById('fJudul').value.trim();
+  const url   = document.getElementById('fUrl').value.trim();
+  if (!judul || !url) { errEl.textContent = 'Judul dan URL wajib diisi'; errEl.style.display = 'block'; return; }
+
+  const payload = {
+    judul, url,
+    deskripsi:   document.getElementById('fDeskripsi').value.trim() || null,
+    kategori_id: document.getElementById('fKategori').value || null,
+    ikon:        document.getElementById('fIkon').value || '🔗',
+    warna_ikon:  document.getElementById('fWarna').value,
+    aktif:       document.getElementById('fAktif').checked,
+    slug_pendek: document.getElementById('fSlugPendek').value.trim() || null,
+  };
+
+  try {
+    let r;
+    if (editLinkId) {
+      r = await fetch(`/api/links/${editLinkId}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+    } else {
+      r = await fetch('/api/links', { method: 'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+    }
+    if (!r.ok) { const d = await r.json(); errEl.textContent = d.error || 'Gagal menyimpan'; errEl.style.display = 'block'; return; }
+    closeLinkModal();
+    await loadLinks();
+    await loadDashboard();
+  } catch {
+    errEl.textContent = 'Koneksi gagal'; errEl.style.display = 'block';
+  }
+}
+
+async function hapusLink(id) {
+  const ok = await showConfirm('Hapus link ini? Tindakan ini tidak dapat dibatalkan.', '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>');
+  if (!ok) return;
+  await fetch(`/api/links/${id}`, { method: 'DELETE', headers: authHeaders() });
+  await loadLinks();
+  await loadDashboard();
+}
+
+// ── IKON GRID ────────────────────────────────────────
+function buildIkonGrid() {
+  const grid = document.getElementById('ikonGrid');
+  grid.innerHTML = IKON_LIST.map(e => `
+    <button class="ikon-btn" data-ikon="${e}" onclick="pilihIkon('${e}')" type="button">${e}</button>
+  `).join('');
+}
+function pilihIkon(e) {
+  document.getElementById('fIkon').value = e;
+  highlightIkon(e);
+}
+function highlightIkon(e) {
+  document.querySelectorAll('.ikon-btn').forEach(b => b.classList.toggle('selected', b.dataset.ikon === e));
+}
+document.getElementById('fWarna').addEventListener('input', e => {
+  document.getElementById('fWarnaLabel').textContent = e.target.value;
+});
+
+// ── SHORT LINK PREVIEW ───────────────────────────────
+function updateShortLinkPreview(slug) {
+  const el = document.getElementById('shortLinkPreview');
+  if (slug) {
+    el.style.display = 'block';
+    el.textContent = `🔗 ${location.origin}/${slug}`;
+  } else {
+    el.style.display = 'none';
+  }
+}
+document.getElementById('fSlugPendek').addEventListener('input', e => {
+  updateShortLinkPreview(e.target.value.trim());
+});
+
+// ── KATEGORI ─────────────────────────────────────────
+async function loadKategori() {
+  const r = await fetch('/api/kategori');
+  const d = await r.json();
+  allKategori = d.kategori || [];
+  renderKategoriTable();
+}
+function renderKategoriTable() {
+  const tbody = document.getElementById('kategoriTableBody');
+  if (!allKategori.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Belum ada kategori.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = allKategori.map(k => `
+    <tr>
+      <td><strong>${esc(k.nama)}</strong></td>
+      <td style="font-family:'DM Mono',monospace">${k.urutan}</td>
+      <td><span class="badge badge-green">${k.jumlah_link} link</span></td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openEditKat(${k.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusKat(${k.id})">Hapus</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+document.getElementById('btnTambahKategori').addEventListener('click', () => openKatModal());
+document.getElementById('closeKatModal').addEventListener('click', closeKatModal);
+document.getElementById('cancelKatModal').addEventListener('click', closeKatModal);
+document.getElementById('saveKatBtn').addEventListener('click', saveKat);
+
+function openKatModal(id = null) {
+  editKatId = id;
+  document.getElementById('modalKatTitle').textContent = id ? 'Edit Kategori' : 'Tambah Kategori';
+  document.getElementById('katError').style.display = 'none';
+  if (id) {
+    const k = allKategori.find(x => x.id === id);
+    document.getElementById('kNama').value = k.nama;
+    document.getElementById('kUrutan').value = k.urutan;
+  } else {
+    document.getElementById('kNama').value = '';
+    document.getElementById('kUrutan').value = '0';
+  }
+  document.getElementById('modalKategori').classList.add('open');
+}
+function closeKatModal() { document.getElementById('modalKategori').classList.remove('open'); }
+function openEditKat(id) { openKatModal(id); }
+
+async function saveKat() {
+  const errEl = document.getElementById('katError');
+  errEl.style.display = 'none';
+  const nama = document.getElementById('kNama').value.trim();
+  if (!nama) { errEl.textContent = 'Nama kategori wajib diisi'; errEl.style.display = 'block'; return; }
+  const payload = { nama, urutan: parseInt(document.getElementById('kUrutan').value) || 0 };
+  try {
+    let r;
+    if (editKatId) {
+      r = await fetch(`/api/kategori/${editKatId}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+    } else {
+      r = await fetch('/api/kategori', { method: 'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+    }
+    if (!r.ok) { const d = await r.json(); errEl.textContent = d.error || 'Gagal'; errEl.style.display = 'block'; return; }
+    closeKatModal();
+    await loadKategori();
+  } catch {
+    errEl.textContent = 'Koneksi gagal'; errEl.style.display = 'block';
+  }
+}
+
+async function hapusKat(id) {
+  const ok = await showConfirm('Hapus kategori ini? Link di dalamnya tidak akan terhapus.', '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>');
+  if (!ok) return;
+  await fetch(`/api/kategori/${id}`, { method: 'DELETE', headers: authHeaders() });
+  await loadKategori();
+}
+
+// ── BUNDLE ────────────────────────────────────────────
+async function loadBundles() {
+  try {
+    const r = await fetch('/api/bundles', { headers: authHeaders() });
+    const d = await r.json();
+    allBundles = d.bundles || [];
+    renderBundleTable();
+  } catch {}
+}
+
+function renderBundleTable() {
+  const tbody = document.getElementById('bundleTableBody');
+  if (!allBundles.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Belum ada bundle. Buat sekarang!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = allBundles.map(b => `
+    <tr>
+      <td><strong>${esc(b.judul)}</strong></td>
+      <td style="font-family:'DM Mono',monospace;font-size:.75rem;color:var(--teks-muted)">/bundle/${esc(b.slug)}</td>
+      <td><span class="badge badge-green">${b.jumlah_item} link</span></td>
+      <td>${b.aktif ? '<span class="badge badge-green">Aktif</span>' : '<span class="badge badge-gray">Nonaktif</span>'}</td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openBundleDetail(${b.id})">Kelola</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusBundle(${b.id})">Hapus</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// Buka/tutup detail bundle
+function openBundleDetail(id) {
+  currentBundleId = id;
+  document.getElementById('bundleListView').style.display = 'none';
+  document.getElementById('bundleDetailView').style.display = 'block';
+  refreshBundleDetail();
+}
+
+async function refreshBundleDetail() {
+  try {
+    const r = await fetch(`/api/bundles/${currentBundleId}`, { headers: authHeaders() });
+    const d = await r.json();
+    const b = d.bundle;
+    currentBundleItems = d.items || [];
+
+    document.getElementById('bundleDetailTitle').textContent = b.judul;
+
+    document.getElementById('bundleInfoDisplay').innerHTML = `
+      <div style="font-size:.88rem;color:var(--teks-mid);line-height:1.8">
+        <div><strong>Judul:</strong> ${esc(b.judul)}</div>
+        ${b.deskripsi ? `<div><strong>Deskripsi:</strong> ${esc(b.deskripsi)}</div>` : ''}
+        <div><strong>Status:</strong> ${b.aktif
+          ? '<span style="color:var(--hijau);display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>Aktif</span>'
+          : '<span style="color:var(--merah);display:inline-flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>Nonaktif</span>'
+        }</div>
+      </div>`;
+
+    const url = `${location.origin}/bundle/${b.slug}`;
+    document.getElementById('bundleShareUrl').textContent = url;
+    document.getElementById('btnOpenBundle').href = `/bundle/${b.slug}`;
+
+    renderBundleItems();
+  } catch {}
+}
+
+function renderBundleItems() {
+  const tbody = document.getElementById('bundleItemsBody');
+  if (!currentBundleItems.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Belum ada link. Tambah sekarang!</td></tr>';
+    return;
+  }
+  tbody.innerHTML = currentBundleItems.map(item => `
+    <tr>
+      <td style="font-size:1.2rem">${esc(item.ikon||'🔗')}</td>
+      <td>
+        <strong>${esc(item.judul)}</strong>
+        ${item.deskripsi ? `<br><small style="color:var(--teks-muted)">${esc(item.deskripsi)}</small>` : ''}
+      </td>
+      <td style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--teks-muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+        ${esc(item.url.substring(0,50))}${item.url.length>50?'…':''}
+      </td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openEditBundleItem(${item.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusBundleItem(${item.id})">Hapus</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+document.getElementById('btnBackBundle').addEventListener('click', () => {
+  document.getElementById('bundleDetailView').style.display = 'none';
+  document.getElementById('bundleListView').style.display = 'block';
+  currentBundleId = null;
+  loadBundles();
+});
+
+// ── Copy share URL ─────────────────────────────────────
+document.getElementById('btnCopyBundleUrl').addEventListener('click', () => {
+  const url = document.getElementById('bundleShareUrl').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    showToast('URL bundle berhasil disalin!', 'success');
+  });
+});
+
+// ── Modal Bundle (buat/edit info) ──────────────────────
+document.getElementById('btnTambahBundle').addEventListener('click', () => openBundleModal());
+document.getElementById('btnEditBundleInfo').addEventListener('click', () => {
+  const b = allBundles.find(x => x.id === currentBundleId);
+  if (b) openBundleModal(b.id);
+});
+document.getElementById('closeBundleModal').addEventListener('click', closeBundleModal);
+document.getElementById('cancelBundleModal').addEventListener('click', closeBundleModal);
+document.getElementById('saveBundleBtn').addEventListener('click', saveBundle);
+
+// Auto-generate slug dari judul
+document.getElementById('bJudul').addEventListener('input', e => {
+  if (!editBundleId) {
+    document.getElementById('bSlug').value = slugifyClient(e.target.value);
+  }
+});
+
+function slugifyClient(str) {
+  return str.toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim().replace(/\s+/g, '-').replace(/-+/g, '-').substring(0, 60);
+}
+
+function openBundleModal(id = null) {
+  editBundleId = id;
+  document.getElementById('modalBundleTitle').textContent = id ? 'Edit Info Bundle' : 'Buat Bundle Baru';
+  document.getElementById('bundleError').style.display = 'none';
+  if (id) {
+    const b = allBundles.find(x => x.id === id) || {};
+    document.getElementById('bJudul').value = b.judul || '';
+    document.getElementById('bDeskripsi').value = b.deskripsi || '';
+    document.getElementById('bSlug').value = b.slug || '';
+    document.getElementById('bAktif').checked = b.aktif !== false;
+  } else {
+    document.getElementById('bJudul').value = '';
+    document.getElementById('bDeskripsi').value = '';
+    document.getElementById('bSlug').value = '';
+    document.getElementById('bAktif').checked = true;
+  }
+  document.getElementById('modalBundle').classList.add('open');
+}
+function closeBundleModal() { document.getElementById('modalBundle').classList.remove('open'); }
+
+async function saveBundle() {
+  const errEl = document.getElementById('bundleError');
+  errEl.style.display = 'none';
+  const judul = document.getElementById('bJudul').value.trim();
+  if (!judul) { errEl.textContent = 'Judul wajib diisi'; errEl.style.display = 'block'; return; }
+  const payload = {
+    judul,
+    deskripsi: document.getElementById('bDeskripsi').value.trim() || null,
+    slug:  document.getElementById('bSlug').value.trim() || null,
+    aktif: document.getElementById('bAktif').checked,
+  };
+  const btn = document.getElementById('saveBundleBtn');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  try {
+    let r;
+    if (editBundleId) {
+      r = await fetch(`/api/bundles/${editBundleId}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+    } else {
+      r = await fetch('/api/bundles', { method: 'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+    }
+    const d = await r.json();
+    if (!r.ok) { errEl.textContent = d.error || 'Gagal menyimpan'; errEl.style.display = 'block'; return; }
+    closeBundleModal();
+    if (!editBundleId) {
+      // Langsung buka detail bundle baru
+      currentBundleId = d.bundle.id;
+      await loadBundles();
+      openBundleDetail(d.bundle.id);
+    } else {
+      await loadBundles();
+      await refreshBundleDetail();
+    }
+    showToast(editBundleId ? 'Bundle diperbarui!' : 'Bundle berhasil dibuat! Tambahkan link.', 'success');
+  } catch {
+    errEl.textContent = 'Koneksi gagal'; errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Simpan';
+  }
+}
+
+async function hapusBundle(id) {
+  const b = allBundles.find(x => x.id === id);
+  const ok = await showConfirm(`Hapus bundle "${b?.judul}"? Semua link di dalamnya ikut terhapus.`, '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>');
+  if (!ok) return;
+  await fetch(`/api/bundles/${id}`, { method: 'DELETE', headers: authHeaders() });
+  await loadBundles();
+  showToast('Bundle berhasil dihapus', 'success');
+}
+
+// ── Modal Bundle Item ──────────────────────────────────
+document.getElementById('btnTambahBundleItem').addEventListener('click', () => openBundleItemModal());
+document.getElementById('closeBundleItemModal').addEventListener('click', closeBundleItemModal);
+document.getElementById('cancelBundleItemModal').addEventListener('click', closeBundleItemModal);
+document.getElementById('saveBundleItemBtn').addEventListener('click', saveBundleItem);
+
+function openBundleItemModal(id = null) {
+  editBundleItemId = id;
+  document.getElementById('modalBundleItemTitle').textContent = id ? 'Edit Link' : 'Tambah Link';
+  document.getElementById('bundleItemError').style.display = 'none';
+  if (id) {
+    const item = currentBundleItems.find(x => x.id === id) || {};
+    document.getElementById('biJudul').value = item.judul || '';
+    document.getElementById('biUrl').value = item.url || '';
+    document.getElementById('biDeskripsi').value = item.deskripsi || '';
+    document.getElementById('biIkon').value = item.ikon || '🔗';
+    document.getElementById('biUrutan').value = item.urutan ?? 0;
+  } else {
+    document.getElementById('biJudul').value = '';
+    document.getElementById('biUrl').value = '';
+    document.getElementById('biDeskripsi').value = '';
+    document.getElementById('biIkon').value = '🔗';
+    document.getElementById('biUrutan').value = currentBundleItems.length;
+  }
+  document.getElementById('modalBundleItem').classList.add('open');
+}
+function closeBundleItemModal() { document.getElementById('modalBundleItem').classList.remove('open'); }
+function openEditBundleItem(id) { openBundleItemModal(id); }
+
+async function saveBundleItem() {
+  const errEl = document.getElementById('bundleItemError');
+  errEl.style.display = 'none';
+  const judul = document.getElementById('biJudul').value.trim();
+  const url   = document.getElementById('biUrl').value.trim();
+  if (!judul || !url) { errEl.textContent = 'Judul dan URL wajib diisi'; errEl.style.display = 'block'; return; }
+  const payload = {
+    judul, url,
+    deskripsi: document.getElementById('biDeskripsi').value.trim() || null,
+    ikon:      document.getElementById('biIkon').value || '🔗',
+    urutan:    parseInt(document.getElementById('biUrutan').value) || 0,
+  };
+  const btn = document.getElementById('saveBundleItemBtn');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+  try {
+    let r;
+    if (editBundleItemId) {
+      r = await fetch(`/api/bundles/${currentBundleId}/items/${editBundleItemId}`, { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+    } else {
+      r = await fetch(`/api/bundles/${currentBundleId}/items`, { method: 'POST', headers: authHeaders(), body: JSON.stringify(payload) });
+    }
+    if (!r.ok) { const d = await r.json(); errEl.textContent = d.error || 'Gagal'; errEl.style.display = 'block'; return; }
+    closeBundleItemModal();
+    await refreshBundleDetail();
+    showToast('Link berhasil disimpan!', 'success');
+  } catch {
+    errEl.textContent = 'Koneksi gagal'; errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Simpan';
+  }
+}
+
+async function hapusBundleItem(id) {
+  const ok = await showConfirm('Hapus link ini dari bundle?', '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>');
+  if (!ok) return;
+  await fetch(`/api/bundles/${currentBundleId}/items/${id}`, { method: 'DELETE', headers: authHeaders() });
+  await refreshBundleDetail();
+  showToast('Link dihapus dari bundle', 'success');
+}
+
+// ── SETTINGS ─────────────────────────────────────────
+async function loadSettings() {
+  const r = await fetch('/api/settings');
+  const d = await r.json();
+  const s = d.settings || {};
+  document.getElementById('sNamaInstansi').value = s.nama_instansi || '';
+  document.getElementById('sTagline').value = s.tagline || '';
+  document.getElementById('sLogoUrl').value = s.logo_url || '';
+  document.getElementById('sFooterText').value = s.footer_text || '';
+  document.getElementById('sWarnaPrimer').value = s.warna_primer || '#0077B6';
+  document.getElementById('warnaLabel').textContent = s.warna_primer || '#0077B6';
+}
+document.getElementById('sWarnaPrimer').addEventListener('input', e => {
+  document.getElementById('warnaLabel').textContent = e.target.value;
+});
+document.getElementById('btnSaveSettings').addEventListener('click', async () => {
+  const fb = document.getElementById('settingsFeedback');
+  const payload = {
+    nama_instansi: document.getElementById('sNamaInstansi').value,
+    tagline:       document.getElementById('sTagline').value,
+    logo_url:      document.getElementById('sLogoUrl').value,
+    footer_text:   document.getElementById('sFooterText').value,
+    warna_primer:  document.getElementById('sWarnaPrimer').value,
+  };
+  try {
+    const r = await fetch('/api/settings', { method: 'PUT', headers: authHeaders(), body: JSON.stringify(payload) });
+    fb.style.display = 'block';
+    fb.style.color = r.ok ? 'var(--hijau)' : 'var(--merah)';
+    fb.textContent = r.ok ? '✓ Pengaturan berhasil disimpan!' : 'Gagal menyimpan.';
+    setTimeout(() => fb.style.display = 'none', 3000);
+  } catch {
+    fb.style.display = 'block';
+    fb.style.color = 'var(--merah)';
+    fb.textContent = 'Koneksi gagal.';
+  }
+});
+
+// ── REGISTER ADMIN ────────────────────────────────────
+document.getElementById('btnRegisterAdmin').addEventListener('click', async () => {
+  const errEl = document.getElementById('adminRegError');
+  const sucEl = document.getElementById('adminRegSuccess');
+  const btn   = document.getElementById('btnRegisterAdmin');
+  errEl.style.display = 'none';
+  sucEl.style.display = 'none';
+
+  const nama      = document.getElementById('aNewNama').value.trim();
+  const email     = document.getElementById('aNewEmail').value.trim();
+  const password  = document.getElementById('aNewPassword').value;
+  const password2 = document.getElementById('aNewPassword2').value;
+  const setup_key = document.getElementById('aSetupKey').value;
+
+  if (!nama || !email || !password || !setup_key) {
+    errEl.textContent = 'Semua field wajib diisi.';
+    errEl.style.display = 'block'; return;
+  }
+  if (password.length < 8) {
+    errEl.textContent = 'Password minimal 8 karakter.';
+    errEl.style.display = 'block'; return;
+  }
+  if (password !== password2) {
+    errEl.textContent = 'Konfirmasi password tidak cocok.';
+    errEl.style.display = 'block'; return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Mendaftarkan...';
+
+  try {
+    const r = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nama, email, password, setup_key }),
+    });
+    const d = await r.json();
+    if (!r.ok) {
+      errEl.textContent = d.error || 'Gagal mendaftarkan admin.';
+      errEl.style.display = 'block';
+    } else {
+      sucEl.textContent = `✓ Admin "${nama}" berhasil didaftarkan!`;
+      sucEl.style.display = 'block';
+      document.getElementById('aNewNama').value = '';
+      document.getElementById('aNewEmail').value = '';
+      document.getElementById('aNewPassword').value = '';
+      document.getElementById('aNewPassword2').value = '';
+      document.getElementById('aSetupKey').value = '';
+    }
+  } catch {
+    errEl.textContent = 'Koneksi gagal. Coba lagi.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = 'Daftarkan Admin';
+  }
+});
+
+// ── SHORT LINK ────────────────────────────────────────
+let allShortLinks = [];   // links yang punya slug_pendek
+let slMode = 'new';       // 'new' | 'existing'
+let editSLId = null;      // link id yang sedang diedit short link-nya
+
+// Load saat showAdmin
+async function loadShortLinks() {
+  try {
+    const r = await fetch('/api/links', { headers: authHeaders() });
+    const d = await r.json();
+    // allLinks mungkin belum dimuat, simpan local
+    allShortLinks = (d.links || []).filter(l => l.slug_pendek);
+    renderShortLinkTable(allShortLinks);
+    updateSLStats(d.links || []);
+  } catch {
+    document.getElementById('shortLinkTableBody').innerHTML =
+      '<tr class="empty-row"><td colspan="5">Gagal memuat data.</td></tr>';
+  }
+}
+
+function updateSLStats(allL) {
+  const withSlug = allL.filter(l => l.slug_pendek);
+  const totalKlik = withSlug.reduce((sum, l) => sum + (l.total_klik || 0), 0);
+  const top = withSlug.sort((a,b) => (b.total_klik||0)-(a.total_klik||0))[0];
+  document.getElementById('slStatTotal').textContent = withSlug.length;
+  document.getElementById('slStatKlik').textContent = totalKlik.toLocaleString('id');
+  document.getElementById('slStatTop').textContent = top ? `/${top.slug_pendek}` : '–';
+}
+
+function renderShortLinkTable(links) {
+  const tbody = document.getElementById('shortLinkTableBody');
+  if (!links.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Belum ada short link. Klik "+ Buat Short Link" untuk mulai.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = links.map(l => `
+    <tr>
+      <td>
+        <a href="/${esc(l.slug_pendek)}" target="_blank"
+           style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--hijau);font-weight:700;text-decoration:none">
+          /${esc(l.slug_pendek)}
+        </a>
+        <button title="Salin" onclick="copySL('/${esc(l.slug_pendek)}')"
+          style="margin-left:6px;background:none;border:none;cursor:pointer;color:var(--teks-muted);vertical-align:middle;padding:2px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
+      </td>
+      <td>
+        <strong style="font-size:.88rem">${esc(l.judul)}</strong><br>
+        <small style="font-family:'DM Mono',monospace;color:var(--teks-muted);font-size:.72rem">${esc(l.url.substring(0,45))}${l.url.length>45?'…':''}</small>
+      </td>
+      <td style="font-family:'DM Mono',monospace">
+        <span class="badge badge-gold">${(l.total_klik||0).toLocaleString('id')}</span>
+      </td>
+      <td>${l.aktif ? '<span class="badge badge-green">Aktif</span>' : '<span class="badge badge-gray">Nonaktif</span>'}</td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-ghost btn-sm" onclick="openEditSL(${l.id})">Edit</button>
+          <button class="btn btn-danger btn-sm" onclick="hapusSL(${l.id})">Hapus Slug</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+function filterShortLinks() {
+  const q = document.getElementById('slSearch').value.toLowerCase();
+  const filtered = allShortLinks.filter(l =>
+    (l.slug_pendek||'').toLowerCase().includes(q) ||
+    (l.judul||'').toLowerCase().includes(q)
+  );
+  renderShortLinkTable(filtered);
+}
+
+async function copySL(path) {
+  await navigator.clipboard.writeText(location.origin + path);
+  showToast('Short link disalin!', 'success');
+}
+
+// ── MODAL SHORT LINK ─────────────────────────────────
+document.getElementById('btnTambahShortLink').addEventListener('click', () => openSLModal());
+document.getElementById('closeSLModal').addEventListener('click', closeSLModal);
+document.getElementById('cancelSLModal').addEventListener('click', closeSLModal);
+document.getElementById('saveSLBtn').addEventListener('click', saveSL);
+
+function openSLModal(id = null) {
+  editSLId = id;
+  const isEdit = id !== null;
+  document.getElementById('modalSLTitle').textContent = isEdit ? 'Edit Short Link' : 'Buat Short Link';
+  document.getElementById('slError').style.display = 'none';
+  document.getElementById('slPreviewBox').style.display = 'none';
+  document.getElementById('slModeToggle').style.display = isEdit ? 'none' : 'flex';
+
+  if (isEdit) {
+    // Edit mode: hanya ubah slug
+    const l = allLinks.find(x => x.id === id) || allShortLinks.find(x => x.id === id);
+    setSLMode('new', true);
+    document.getElementById('slJudul').value = l?.judul || '';
+    document.getElementById('slJudul').disabled = true;
+    document.getElementById('slUrl').value = l?.url || '';
+    document.getElementById('slUrl').disabled = true;
+    document.getElementById('slSlug').value = l?.slug_pendek || '';
+    document.getElementById('slAktif').checked = l?.aktif !== false;
+    updateSLPreview();
+  } else {
+    setSLMode('new');
+    document.getElementById('slJudul').value = '';
+    document.getElementById('slJudul').disabled = false;
+    document.getElementById('slUrl').value = '';
+    document.getElementById('slUrl').disabled = false;
+    document.getElementById('slSlug').value = '';
+    document.getElementById('slAktif').checked = true;
+    // Populate existing select (links tanpa slug)
+    const sel = document.getElementById('slLinkSelect');
+    const available = allLinks.filter(l => !l.slug_pendek);
+    sel.innerHTML = '<option value="">– Pilih link –</option>' +
+      available.map(l => `<option value="${l.id}">${esc(l.ikon||'🔗')} ${esc(l.judul)}</option>`).join('');
+    document.getElementById('slExistingPreview').style.display = 'none';
+  }
+  document.getElementById('modalShortLink').classList.add('open');
+}
+
+function closeSLModal() {
+  document.getElementById('modalShortLink').classList.remove('open');
+  // Re-enable fields
+  document.getElementById('slJudul').disabled = false;
+  document.getElementById('slUrl').disabled = false;
+}
+
+function setSLMode(mode, forceNew = false) {
+  slMode = forceNew ? 'new' : mode;
+  const isNew = slMode === 'new';
+  document.getElementById('slNewGroup').style.display = isNew ? 'block' : 'none';
+  document.getElementById('slExistingGroup').style.display = isNew ? 'none' : 'block';
+  document.getElementById('slModeNewBtn').className = `btn btn-sm ${isNew ? 'btn-primary' : 'btn-ghost'}`;
+  document.getElementById('slModeExistBtn').className = `btn btn-sm ${!isNew ? 'btn-primary' : 'btn-ghost'}`;
+  if (!isNew) {
+    document.getElementById('slSlug').value = '';
+    document.getElementById('slPreviewBox').style.display = 'none';
+  }
+}
+
+function onSLLinkSelect() {
+  const id = parseInt(document.getElementById('slLinkSelect').value);
+  const preview = document.getElementById('slExistingPreview');
+  if (!id) { preview.style.display = 'none'; return; }
+  const l = allLinks.find(x => x.id === id);
+  if (!l) return;
+  preview.style.display = 'block';
+  preview.innerHTML = `<strong>${esc(l.ikon||'🔗')} ${esc(l.judul)}</strong><br><span style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--teks-muted)">${esc(l.url)}</span>`;
+}
+
+function updateSLPreview() {
+  const slug = document.getElementById('slSlug').value.trim();
+  const box = document.getElementById('slPreviewBox');
+  if (!slug) { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  box.textContent = `${location.origin}/${slug}`;
+}
+
+async function saveSL() {
+  const errEl = document.getElementById('slError');
+  errEl.style.display = 'none';
+
+  const slug = document.getElementById('slSlug').value.trim();
+  if (!slug) { errEl.textContent = 'Slug wajib diisi'; errEl.style.display = 'block'; return; }
+
+  const aktif = document.getElementById('slAktif').checked;
+
+  // Mode EDIT: update slug link yang sudah ada
+  if (editSLId !== null) {
+    try {
+      const r = await fetch(`/api/links/${editSLId}`, {
+        method: 'PUT', headers: authHeaders(),
+        body: JSON.stringify({ slug_pendek: slug, aktif })
+      });
+      const d = await r.json();
+      if (!r.ok) { errEl.textContent = d.error || 'Gagal menyimpan'; errEl.style.display = 'block'; return; }
+      closeSLModal();
+      await refreshSLData();
+      showToast('Short link diperbarui!', 'success');
+    } catch { errEl.textContent = 'Koneksi gagal'; errEl.style.display = 'block'; }
+    return;
+  }
+
+  // Mode EXISTING: patch link yang dipilih
+  if (slMode === 'existing') {
+    const linkId = parseInt(document.getElementById('slLinkSelect').value);
+    if (!linkId) { errEl.textContent = 'Pilih link terlebih dahulu'; errEl.style.display = 'block'; return; }
+    try {
+      const r = await fetch(`/api/links/${linkId}`, {
+        method: 'PUT', headers: authHeaders(),
+        body: JSON.stringify({ slug_pendek: slug, aktif })
+      });
+      const d = await r.json();
+      if (!r.ok) { errEl.textContent = d.error || 'Gagal menyimpan'; errEl.style.display = 'block'; return; }
+      closeSLModal();
+      await refreshSLData();
+      showToast('Short link ditambahkan!', 'success');
+    } catch { errEl.textContent = 'Koneksi gagal'; errEl.style.display = 'block'; }
+    return;
+  }
+
+  // Mode NEW: buat link baru sekalian
+  const judul = document.getElementById('slJudul').value.trim();
+  const url   = document.getElementById('slUrl').value.trim();
+  if (!judul || !url) { errEl.textContent = 'Judul dan URL wajib diisi'; errEl.style.display = 'block'; return; }
+  try {
+    const r = await fetch('/api/links', {
+      method: 'POST', headers: authHeaders(),
+      body: JSON.stringify({ judul, url, slug_pendek: slug, aktif, ikon: '🔗', warna_ikon: '#0077B6' })
+    });
+    const d = await r.json();
+    if (!r.ok) { errEl.textContent = d.error || 'Gagal menyimpan'; errEl.style.display = 'block'; return; }
+    closeSLModal();
+    await refreshSLData();
+    showToast('Short link berhasil dibuat!', 'success');
+  } catch { errEl.textContent = 'Koneksi gagal'; errEl.style.display = 'block'; }
+}
+
+function openEditSL(id) { openSLModal(id); }
+
+async function hapusSL(id) {
+  const l = allShortLinks.find(x => x.id === id);
+  const ok = await showConfirm(
+    `Hapus slug "/${l?.slug_pendek || ''}" dari link ini?\nLink aslinya tetap ada, hanya short link-nya yang dihapus.`,
+    '🔗', 'Hapus Slug'
+  );
+  if (!ok) return;
+  try {
+    const r = await fetch(`/api/links/${id}`, {
+      method: 'PUT', headers: authHeaders(),
+      body: JSON.stringify({ slug_pendek: null })
+    });
+    if (!r.ok) { showToast('Gagal menghapus slug', 'error'); return; }
+    await refreshSLData();
+    showToast('Slug berhasil dihapus', 'success');
+  } catch { showToast('Koneksi gagal', 'error'); }
+}
+
+async function refreshSLData() {
+  await loadLinks();       // refresh tabel Links juga
+  await loadShortLinks();
+}
+
+function esc(str) {
+  return String(str||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(message, type = '', duration = 3000) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = 'toast' + (type ? ' ' + type : '');
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.animation = 'toastOut .3s ease forwards';
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+// ── CUSTOM CONFIRM ────────────────────────────────────
+function showConfirm(message, icon = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>', okLabel = 'Hapus') {
+  return new Promise(resolve => {
+    document.getElementById('confirmMsg').textContent = message;
+    document.getElementById('confirmIcon').innerHTML = icon;
+    document.getElementById('confirmOk').textContent = okLabel;
+    const overlay = document.getElementById('confirmOverlay');
+    overlay.classList.add('open');
+    const btnOk     = document.getElementById('confirmOk');
+    const btnCancel = document.getElementById('confirmCancel');
+    function cleanup(result) {
+      overlay.classList.remove('open');
+      btnOk.removeEventListener('click', onOk);
+      btnCancel.removeEventListener('click', onCancel);
+      resolve(result);
+    }
+    function onOk()     { cleanup(true);  }
+    function onCancel() { cleanup(false); }
+    btnOk.addEventListener('click', onOk);
+    btnCancel.addEventListener('click', onCancel);
+    overlay.addEventListener('click', e => { if (e.target === overlay) cleanup(false); }, { once: true });
+  });
+}
+</script>
+
+<!-- TOAST CONTAINER -->
+<div id="toastContainer"></div>
+
+<!-- CUSTOM CONFIRM DIALOG -->
+<div id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon" id="confirmIcon"></div>
+    <div class="confirm-msg" id="confirmMsg"></div>
+    <div class="confirm-actions">
+      <button class="btn btn-ghost" id="confirmCancel">Batal</button>
+      <button class="btn btn-danger" id="confirmOk">Hapus</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
