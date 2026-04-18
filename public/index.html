@@ -279,16 +279,25 @@
     .modal-title {
       font-weight: 700;
       font-size: 1rem;
-      margin-bottom: 4px;
+      margin-bottom: 16px;
     }
-    .modal-url {
-      font-size: .75rem;
-      color: var(--teks-muted);
-      font-family: inherit;
-      margin-bottom: 20px;
-      word-break: break-all;
+    #qrCanvas {
+      margin: 0 auto;
+      position: relative;
+      display: inline-block;
     }
-    #qrCanvas { margin: 0 auto; }
+    #qrFavicon {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      border: 3px solid #fff;
+      background: #fff;
+      object-fit: contain;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+      pointer-events: none;
+    }
     .modal-close {
       margin-top: 20px;
       padding: 10px 28px;
@@ -514,8 +523,9 @@
 <div class="modal-overlay" id="qrModal">
   <div class="modal-box">
     <div class="modal-title" id="qrTitle"></div>
-    <div class="modal-url" id="qrUrl"></div>
-    <div id="qrCanvas"></div>
+    <div id="qrCanvas">
+      <img id="qrFavicon" src="/favicon.png" alt="" />
+    </div>
     <button class="modal-close" id="qrClose">Tutup</button>
   </div>
 </div>
@@ -705,16 +715,20 @@ function escHtml(str) {
 let qrInstance = null;
 function openQr(url, title) {
   document.getElementById('qrTitle').textContent = title;
-  document.getElementById('qrUrl').textContent = url;
   const canvas = document.getElementById('qrCanvas');
+  // hapus QR lama tapi pertahankan favicon
+  const favicon = document.getElementById('qrFavicon');
   canvas.innerHTML = '';
+  canvas.appendChild(favicon);
   qrInstance = new QRCode(canvas, {
     text: url,
-    width: 200, height: 200,
+    width: 220, height: 220,
     colorDark: '#0077B6',
     colorLight: '#ffffff',
     correctLevel: QRCode.CorrectLevel.H,
   });
+  // pastikan favicon selalu di atas QR
+  canvas.appendChild(favicon);
   document.getElementById('qrModal').classList.add('open');
 }
 document.getElementById('qrClose').addEventListener('click', () => {
