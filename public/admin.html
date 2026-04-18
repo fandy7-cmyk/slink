@@ -605,19 +605,17 @@
       <label>Deskripsi (opsional)</label>
       <textarea id="fDeskripsi" rows="2" placeholder="Keterangan singkat..."></textarea>
     </div>
-    <div class="form-row" style="margin-bottom:14px;align-items:start">
-      <div class="form-group">
-        <label>Ikon (pilih emoji)</label>
-        <input type="text" id="fIkon" placeholder="🔗" style="width:80px;text-align:center;font-size:1.2rem" maxlength="4" />
-        <div class="ikon-grid" id="ikonGrid"></div>
-      </div>
-      <div class="form-group">
-        <label>Warna Ikon</label>
-        <div style="display:flex;gap:10px;align-items:center">
+    <div class="form-group" style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <label style="margin-bottom:0">Ikon (pilih emoji)</label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <label style="margin-bottom:0;font-size:.82rem;color:var(--teks-muted)">Warna Ikon</label>
           <input type="color" id="fWarna" value="#0077B6" />
-          <span id="fWarnaLabel" style="font-size:.85rem">#0077B6</span>
+          <span id="fWarnaLabel" style="font-size:.82rem">#0077B6</span>
         </div>
       </div>
+      <input type="text" id="fIkon" placeholder="🔗" style="width:80px;text-align:center;font-size:1.2rem;margin-bottom:8px" maxlength="4" />
+      <div class="ikon-grid" id="ikonGrid"></div>
     </div>
     <div class="form-group" style="margin-bottom:14px">
         <label>Short Link <span style="color:var(--teks-muted);font-weight:400">(opsional)</span></label>
@@ -859,8 +857,7 @@ document.getElementById('btnLogout').addEventListener('click', async () => {
   token = ''; adminInfo = null;
   localStorage.removeItem('sl_token');
   localStorage.removeItem('sl_admin');
-  document.getElementById('adminPage').style.display = 'none';
-  document.getElementById('loginPage').style.display = 'flex';
+  window.location.href = '/';
 });
 
 async function doLogin() {
