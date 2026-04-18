@@ -232,6 +232,7 @@
     /* ── IKON PICKER ────────────────────────────── */
     .ikon-grid {
       display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-top: 8px;
+      max-width: 100%; overflow: hidden;
     }
     .ikon-btn {
       aspect-ratio: 1; border-radius: 8px; border: 1.5px solid var(--abu-2);
@@ -612,10 +613,13 @@
       </div>
       <div class="form-group">
         <label>Warna Ikon</label>
-        <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
+        <div style="display:flex;gap:10px;align-items:center">
           <input type="color" id="fWarna" value="#0077B6" />
           <span id="fWarnaLabel" style="font-size:.85rem">#0077B6</span>
         </div>
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:14px">
         <label>Short Link <span style="color:var(--teks-muted);font-weight:400">(opsional)</span></label>
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap">/</span>
@@ -630,7 +634,6 @@
           <input type="checkbox" id="fAktif" checked style="width:auto" />
           Tampilkan di halaman publik
         </label>
-      </div>
     </div>
     <div id="linkError" style="color:var(--merah);font-size:.82rem;display:none;margin-top:4px"></div>
     <div class="modal-footer">
