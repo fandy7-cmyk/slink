@@ -5,8 +5,6 @@
 //   3. Tidak ketemu → redirect ke /
 
 import { getDb, jsonResponse, errorResponse } from './_db.js';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 export const handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return jsonResponse({});
@@ -26,12 +24,11 @@ export const handler = async (event) => {
     `;
 
     if (bundles.length) {
-      // Serve bundle.html langsung sebagai response body
-      const html = readFileSync(join(process.cwd(), 'public', 'bundle.html'), 'utf-8');
+      // Redirect ke bundle.html dengan slug sebagai query param
       return {
-        statusCode: 200,
-        headers: { 'Content-Type': 'text/html; charset=utf-8' },
-        body: html,
+        statusCode: 302,
+        headers: { Location: `/bundle.html?slug=${encodeURIComponent(slug)}` },
+        body: '',
       };
     }
 
