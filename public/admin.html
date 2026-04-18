@@ -219,7 +219,7 @@
     .form-row {
       display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
     }
-    .form-row .form-group { margin-bottom: 0; }
+    .form-row .form-group { margin-bottom: 0; min-width: 0; overflow: hidden; }
     .form-row-3 {
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
     }
@@ -231,8 +231,8 @@
 
     /* ── IKON PICKER ────────────────────────────── */
     .ikon-grid {
-      display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-top: 8px;
-      max-width: 100%; overflow: hidden;
+      display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; margin-top: 8px;
+      width: 100%; overflow: hidden;
     }
     .ikon-btn {
       aspect-ratio: 1; border-radius: 8px; border: 1.5px solid var(--abu-2);
