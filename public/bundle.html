@@ -307,7 +307,9 @@ function toast(msg, type='success') {
 }
 
 // ── Ambil slug dari path: /SLUG ──────────────────────
-const slug = location.pathname.replace(/^\//, '').replace(/\/$/, '');
+// Baca slug dari query string (?slug=...) atau dari pathname
+const _params = new URLSearchParams(location.search);
+const slug = _params.get('slug') || location.pathname.replace(/^\//, '').replace(/\/$/, '');
 
 if (!slug) {
   document.getElementById('headerContent').innerHTML = `
