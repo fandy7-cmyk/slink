@@ -51,7 +51,7 @@ export const handler = async (event) => {
       if (!rows.length) return errorResponse('Bundle tidak ditemukan', 404);
       const bundle = rows[0];
       const items = await sql`
-        SELECT * FROM bundle_items WHERE bundle_id = ${bundle.id} ORDER BY urutan ASC, id ASC
+        SELECT * FROM bundle_items WHERE bundle_id = ${bundle.id} ORDER BY id ASC
       `;
       return jsonResponse({ bundle, items });
     } catch (err) {
@@ -87,7 +87,7 @@ export const handler = async (event) => {
       const rows = await sql`SELECT * FROM bundles WHERE id = ${bundleId} LIMIT 1`;
       if (!rows.length) return errorResponse('Bundle tidak ditemukan', 404);
       const items = await sql`
-        SELECT * FROM bundle_items WHERE bundle_id = ${bundleId} ORDER BY urutan ASC, id ASC
+        SELECT * FROM bundle_items WHERE bundle_id = ${bundleId} ORDER BY id ASC
       `;
       return jsonResponse({ bundle: rows[0], items });
     } catch (err) {
@@ -161,12 +161,12 @@ export const handler = async (event) => {
 
   // ── POST /api/bundles/:id/items ───────────────────────────
   if (event.httpMethod === 'POST' && bundleId && isItems && !itemId) {
-    const { judul, url, deskripsi, ikon, urutan } = parseBody(event);
+    const { judul, url, deskripsi, ikon } = parseBody(event);
     if (!judul || !url) return errorResponse('Judul dan URL wajib diisi', 400);
     try {
       const rows = await sql`
-        INSERT INTO bundle_items (bundle_id, judul, url, deskripsi, ikon, urutan)
-        VALUES (${bundleId}, ${judul}, ${url}, ${deskripsi || null}, ${ikon || '🔗'}, ${urutan ?? 0})
+        INSERT INTO bundle_items (bundle_id, judul, url, deskripsi, ikon)
+        VALUES (${bundleId}, ${judul}, ${url}, ${deskripsi || null}, ${ikon || '🔗'})
         RETURNING *
       `;
       return jsonResponse({ item: rows[0] }, 201);
@@ -178,15 +178,14 @@ export const handler = async (event) => {
 
   // ── PUT /api/bundles/:id/items/:itemId ────────────────────
   if (event.httpMethod === 'PUT' && bundleId && isItems && itemId) {
-    const { judul, url, deskripsi, ikon, urutan } = parseBody(event);
+    const { judul, url, deskripsi, ikon } = parseBody(event);
     try {
       const rows = await sql`
         UPDATE bundle_items SET
           judul     = COALESCE(${judul}, judul),
           url       = COALESCE(${url}, url),
           deskripsi = ${deskripsi !== undefined ? deskripsi : sql`deskripsi`},
-          ikon      = COALESCE(${ikon}, ikon),
-          urutan    = COALESCE(${urutan !== undefined ? urutan : null}, urutan)
+          ikon      = COALESCE(${ikon}, ikon)
         WHERE id = ${itemId} AND bundle_id = ${bundleId}
         RETURNING *
       `;

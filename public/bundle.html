@@ -38,7 +38,7 @@
     body::before {
       content: '';
       position: fixed; inset: 0; z-index: 0;
-      background: linear-gradient(135deg, rgba(0,119,182,.80) 0%, rgba(0,180,216,.75) 50%, rgba(0,137,77,.78) 100%);
+      background: linear-gradient(135deg, rgba(0,70,120,.95) 0%, rgba(0,130,170,.95) 50%, rgba(0,90,45,.95) 100%);
       pointer-events: none;
     }
     .page-wrap {
@@ -48,21 +48,32 @@
       padding: 40px 16px 80px;
     }
 
+    /* ── LOGO PARTNER ───── */
+    .logo-partner-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 16px; margin: 0 auto 16px;
+    }
+    .logo-partner-row img {
+      height: 90px; width: auto; object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,.12));
+    }
+
+    /* ── BRAND FOOTER ───── */
+    .brand-footer {
+      display: flex; flex-direction: column; align-items: center;
+      gap: 6px; margin-top: 32px; padding: 12px 0 60px;
+      opacity: .85; width: 100%; text-align: center;
+    }
+    .brand-footer img { height: 38px; width: auto; object-fit: contain; filter: brightness(0) invert(1); }
+    .brand-footer span { font-size: .7rem; color: rgba(255,255,255,.9); letter-spacing: .3px; text-shadow: 0 1px 4px rgba(0,0,0,.2); }
+
     /* ── HEADER ─────────── */
     .bundle-header {
       text-align: center;
       margin-bottom: 32px;
       animation: fadeDown .5s ease both;
     }
-    .back-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: .8rem; color: var(--teks-muted); text-decoration: none;
-      font-weight: 600; margin-bottom: 20px;
-      padding: 6px 12px; border-radius: 999px;
-      background: var(--putih); border: 1.5px solid var(--abu-2);
-      transition: all var(--transition);
-    }
-    .back-link:hover { color: var(--hijau); border-color: var(--hijau); }
+
 
     .bundle-icon {
       width: 72px; height: 72px;
@@ -100,37 +111,6 @@
       background: var(--hijau-light);
       padding: 4px 12px; border-radius: 999px;
     }
-
-    /* ── SHARE BAR ──────── */
-    .share-bar {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1.5px solid rgba(255,255,255,.7);
-      border-radius: var(--radius);
-      padding: 10px 14px;
-      margin-bottom: 24px;
-      animation: fadeUp .4s .1s ease both;
-    }
-    .share-url {
-      flex: 1;
-      font-family: 'DM Mono', monospace;
-      font-size: .78rem;
-      color: var(--teks-mid);
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .btn-copy {
-      padding: 6px 14px; border-radius: var(--radius-sm);
-      background: var(--hijau-light); color: var(--hijau);
-      border: none; font-family: inherit; font-size: .8rem;
-      font-weight: 700; cursor: pointer;
-      transition: all var(--transition); white-space: nowrap;
-    }
-    .btn-copy:hover { background: var(--hijau); color: #fff; }
-    .btn-copy.copied { background: var(--hijau); color: #fff; }
 
     /* ── ITEM LIST ──────── */
     .items-list {
@@ -202,15 +182,6 @@
     .state-box h2 { font-size: 1.1rem; font-weight: 700; color: var(--teks); margin-bottom: 8px; }
     .state-box p { font-size: .88rem; line-height: 1.6; }
 
-    /* ── FOOTER ─────────── */
-    .brand-footer {
-      display: flex; flex-direction: column; align-items: center;
-      gap: 6px; margin-top: 40px;
-      opacity: .5;
-    }
-    .brand-footer img { height: 32px; width: auto; }
-    .brand-footer span { font-size: .7rem; color: var(--teks-muted); }
-
     /* ── SKELETON ───────── */
     .skeleton {
       background: linear-gradient(90deg, var(--abu-2) 25%, var(--abu-1) 50%, var(--abu-2) 75%);
@@ -251,21 +222,18 @@
 <body>
 <div class="page-wrap">
 
-  <!-- BACK + HEADER -->
+  <!-- HEADER -->
   <div class="bundle-header" id="bundleHeader">
-    <a href="/" class="back-link">← Kembali ke Superlink</a>
+    <!-- Logo partner row (same as dashboard) -->
+    <div class="logo-partner-row">
+      <img src="/logokemenkes.png" alt="Kemenkes RI" />
+      <img src="/logobalut.png" alt="Kabupaten Banggai Laut" />
+    </div>
     <div id="headerContent">
       <!-- diisi JS -->
-      <div class="bundle-icon skeleton" style="width:72px;height:72px;margin:0 auto 16px"></div>
       <div class="skeleton" style="height:22px;width:60%;margin:0 auto 10px;border-radius:8px"></div>
       <div class="skeleton" style="height:14px;width:80%;margin:0 auto;border-radius:6px"></div>
     </div>
-  </div>
-
-  <!-- SHARE BAR -->
-  <div class="share-bar" id="shareBar" style="display:none">
-    <span class="share-url" id="shareUrl"></span>
-    <button class="btn-copy" id="btnCopy">📋 Salin</button>
   </div>
 
   <!-- ITEMS -->
@@ -287,14 +255,15 @@
     </div>
   </div>
 
-  <!-- BRAND FOOTER -->
-  <div class="brand-footer">
-    <img src="/favicon.png" alt="Superlink" />
-    <span>Powered by Superlink · Dinkes PPKB Kab. Banggai Laut</span>
-  </div>
 </div>
 
 <div id="toastContainer"></div>
+
+<!-- BRAND FOOTER -->
+<div class="brand-footer">
+  <img src="/favicon.png" alt="Superlink" />
+  <span>© 2026 Dinas Kesehatan PPKB Kabupaten Banggai Laut. All rights reserved.</span>
+</div>
 
 <script>
 function esc(str) {
@@ -309,8 +278,8 @@ function toast(msg, type='success') {
   setTimeout(() => { t.style.animation='toastOut .3s ease forwards'; setTimeout(()=>t.remove(),300); }, 2500);
 }
 
-// ── Ambil slug dari path: /bundle/SLUG ───────────────
-const slug = location.pathname.replace(/.*\/bundle\//, '').replace(/\/$/, '');
+// ── Ambil slug dari path: /SLUG ──────────────────────
+const slug = location.pathname.replace(/^\//, '').replace(/\/$/, '');
 
 if (!slug) {
   document.getElementById('headerContent').innerHTML = `
@@ -340,30 +309,12 @@ async function loadBundle(slug) {
     const { bundle, items } = await r.json();
 
     // Update page title & meta
-    document.title = `${bundle.judul} – Superlink`;
+    document.title = `SLINK DINKESPPKB`;
 
     // Render header
     document.getElementById('headerContent').innerHTML = `
-      <div class="bundle-icon">📦</div>
       <div class="bundle-title">${esc(bundle.judul)}</div>
-      ${bundle.deskripsi ? `<div class="bundle-desc">${esc(bundle.deskripsi)}</div>` : ''}
-      <div class="bundle-meta">
-        <span class="meta-badge">🔗 ${items.length} link</span>
-      </div>`;
-
-    // Share bar
-    const shareUrl = `${location.origin}/bundle/${bundle.slug}`;
-    document.getElementById('shareUrl').textContent = shareUrl;
-    document.getElementById('shareBar').style.display = 'flex';
-    document.getElementById('btnCopy').addEventListener('click', () => {
-      navigator.clipboard.writeText(shareUrl).then(() => {
-        const btn = document.getElementById('btnCopy');
-        btn.textContent = '✓ Tersalin!';
-        btn.classList.add('copied');
-        toast('Link bundle berhasil disalin!');
-        setTimeout(() => { btn.textContent = '📋 Salin'; btn.classList.remove('copied'); }, 2000);
-      });
-    });
+      ${bundle.deskripsi ? `<div class="bundle-desc">${esc(bundle.deskripsi)}</div>` : ''}`;
 
     // Render items
     if (!items.length) {

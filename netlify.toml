@@ -12,15 +12,9 @@
   to = "/admin.html"
   status = 200
 
-[[redirects]]
-  from = "/bundle/*"
-  to = "/bundle.html"
-  status = 200
-
-# ── SHORT LINK REDIRECT ──────────────────────────────
-# Di bawah semua route spesifik, di atas catch-all SPA
-# Static files (favicon.png, dll) tidak terpengaruh karena Netlify
-# prioritaskan file statis yang benar-benar ada sebelum redirect rules
+# ── /:slug → function redirect (bundle ATAU short link) ──
+# bundle.html di-serve langsung dari function kalau slug cocok bundle
+# Static files (favicon.png, bg.jpg, dll) tidak terpengaruh
 [[redirects]]
   from = "/:slug"
   to = "/.netlify/functions/redirect/:slug"

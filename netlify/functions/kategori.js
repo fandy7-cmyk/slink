@@ -23,7 +23,7 @@ export const handler = async (event) => {
         FROM kategori k
         LEFT JOIN links l ON l.kategori_id = k.id AND l.aktif = TRUE
         GROUP BY k.id
-        ORDER BY k.urutan ASC, k.id ASC
+        ORDER BY k.id ASC
       `;
       return jsonResponse({ kategori: rows });
     } catch (err) {
@@ -37,11 +37,11 @@ export const handler = async (event) => {
 
   // ── POST ───────────────────────────────────────────────
   if (event.httpMethod === 'POST') {
-    const { nama, urutan } = parseBody(event);
+    const { nama } = parseBody(event);
     if (!nama) return errorResponse('Nama kategori wajib diisi', 400);
     try {
       const rows = await sql`
-        INSERT INTO kategori (nama, urutan) VALUES (${nama}, ${urutan ?? 0}) RETURNING *
+        INSERT INTO kategori (nama) VALUES (${nama}) RETURNING *
       `;
       return jsonResponse({ kategori: rows[0] }, 201);
     } catch (err) {
@@ -51,12 +51,11 @@ export const handler = async (event) => {
 
   // ── PUT ────────────────────────────────────────────────
   if (event.httpMethod === 'PUT' && numId) {
-    const { nama, urutan } = parseBody(event);
+    const { nama } = parseBody(event);
     try {
       const rows = await sql`
         UPDATE kategori SET
-          nama   = COALESCE(${nama}, nama),
-          urutan = COALESCE(${urutan}, urutan)
+          nama   = COALESCE(${nama}, nama)
         WHERE id = ${numId}
         RETURNING *
       `;

@@ -1,10 +1,8 @@
 // netlify/functions/links.js
 // GET    /api/links          → publik, semua link aktif
-// GET    /api/links/all      → admin, semua link
 // POST   /api/links          → admin, tambah link
 // PUT    /api/links/:id      → admin, edit link
 // DELETE /api/links/:id      → admin, hapus link
-// PUT    /api/links/reorder  → admin, ubah urutan (array of {id, urutan})
 
 import { getDb, jsonResponse, errorResponse, parseBody } from './_db.js';
 import { requireAuth } from './_auth.js';
@@ -16,7 +14,7 @@ export const handler = async (event) => {
   const rawPath = event.path.replace(/.*\/links/, '') || '/';
   const segments = rawPath.split('/').filter(Boolean);
   const id = segments[0] && !isNaN(segments[0]) ? parseInt(segments[0]) : null;
-  const sub = id ? segments[1] : segments[0]; // e.g. "reorder"
+  const sub = id ? segments[1] : segments[0];
 
   // ── GET /api/links (publik) ────────────────────────────
   if (event.httpMethod === 'GET' && !sub) {
@@ -24,22 +22,21 @@ export const handler = async (event) => {
     try {
       let rows;
       if (isAdmin) {
-        // admin lihat semua termasuk nonaktif + slug_pendek
         rows = await sql`
           SELECT l.*, k.nama AS kategori_nama,
             COALESCE((SELECT COUNT(*) FROM klik_log kl WHERE kl.link_id = l.id), 0)::INT AS total_klik
           FROM links l
           LEFT JOIN kategori k ON l.kategori_id = k.id
-          ORDER BY l.urutan ASC, l.id ASC
+          ORDER BY l.id ASC
         `;
       } else {
         rows = await sql`
           SELECT l.id, l.judul, l.deskripsi, l.url, l.ikon, l.warna_ikon,
-            l.urutan, l.aktif, l.kategori_id, k.nama AS kategori_nama
+            l.aktif, l.kategori_id, k.nama AS kategori_nama
           FROM links l
           LEFT JOIN kategori k ON l.kategori_id = k.id
           WHERE l.aktif = TRUE
-          ORDER BY l.urutan ASC, l.id ASC
+          ORDER BY l.id ASC
         `;
       }
       return jsonResponse({ links: rows });
@@ -56,7 +53,7 @@ export const handler = async (event) => {
   // ── POST /api/links (tambah) ───────────────────────────
   if (event.httpMethod === 'POST' && !sub) {
     const body = parseBody(event);
-    const { judul, url, deskripsi, ikon, warna_ikon, kategori_id, urutan, aktif, slug_pendek } = body;
+    const { judul, url, deskripsi, ikon, warna_ikon, kategori_id, aktif, slug_pendek } = body;
     if (!judul || !url) return errorResponse('Judul dan URL wajib diisi', 400);
 
     // Validasi slug_pendek unik (jika diisi)
@@ -73,11 +70,11 @@ export const handler = async (event) => {
 
     try {
       const rows = await sql`
-        INSERT INTO links (judul, url, deskripsi, ikon, warna_ikon, kategori_id, urutan, aktif, slug_pendek)
+        INSERT INTO links (judul, url, deskripsi, ikon, warna_ikon, kategori_id, aktif, slug_pendek)
         VALUES (
           ${judul}, ${url}, ${deskripsi || null}, ${ikon || 'link'},
           ${warna_ikon || '#1a73e8'}, ${kategori_id || null},
-          ${urutan ?? 0}, ${aktif !== false},
+          ${aktif !== false},
           ${slugVal}
         )
         RETURNING *
@@ -89,25 +86,10 @@ export const handler = async (event) => {
     }
   }
 
-  // ── PUT /api/links/reorder ─────────────────────────────
-  if (event.httpMethod === 'PUT' && sub === 'reorder') {
-    const { items } = parseBody(event); // [{id, urutan}]
-    if (!Array.isArray(items)) return errorResponse('Format tidak valid', 400);
-    try {
-      for (const item of items) {
-        await sql`UPDATE links SET urutan = ${item.urutan} WHERE id = ${item.id}`;
-      }
-      return jsonResponse({ ok: true });
-    } catch (err) {
-      console.error(err);
-      return errorResponse('Gagal menyimpan urutan');
-    }
-  }
-
   // ── PUT /api/links/:id (edit) ──────────────────────────
   if (event.httpMethod === 'PUT' && id) {
     const body = parseBody(event);
-    const { judul, url, deskripsi, ikon, warna_ikon, kategori_id, urutan, aktif, slug_pendek } = body;
+    const { judul, url, deskripsi, ikon, warna_ikon, kategori_id, aktif, slug_pendek } = body;
 
     // Validasi slug_pendek unik (selain dirinya sendiri)
     const slugVal = slug_pendek !== undefined
@@ -133,7 +115,6 @@ export const handler = async (event) => {
           ikon        = COALESCE(${ikon}, ikon),
           warna_ikon  = COALESCE(${warna_ikon}, warna_ikon),
           kategori_id = ${kategori_id !== undefined ? kategori_id : sql`kategori_id`},
-          urutan      = COALESCE(${urutan}, urutan),
           aktif       = COALESCE(${aktif}, aktif),
           slug_pendek = ${slugVal !== undefined ? slugVal : sql`slug_pendek`},
           updated_at  = NOW()
