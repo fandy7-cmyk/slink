@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SLINK DINKESPPKB</title>
+  <title>SLINK Perencanaan</title>
   <meta name="description" content="Portal link resmi Dinas Kesehatan Kabupaten Banggai Laut" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <!-- QRCode.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
@@ -32,24 +32,6 @@
       --radius-sm:   8px;
       --transition:  .22s cubic-bezier(.4,0,.2,1);
     }
-    [data-theme="dark"] {
-      --hijau:       #00B4D8;
-      --hijau-mid:   #48CAE4;
-      --hijau-light: #0a2030;
-      --emas:        #48CAE4;
-      --emas-light:  #0a1e28;
-      --putih:       #0d1e26;
-      --abu-1:       #0a1820;
-      --abu-2:       #122430;
-      --abu-3:       #1e3d50;
-      --teks:        #e0f4f8;
-      --teks-mid:    #90c4d4;
-      --teks-muted:  #4a7a8a;
-      --shadow-sm:   0 1px 4px rgba(0,0,0,.3);
-      --shadow-md:   0 4px 20px rgba(0,0,0,.4);
-      --shadow-lg:   0 8px 40px rgba(0,0,0,.5);
-    }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -57,7 +39,6 @@
       background: url('/bg.jpg') center center / cover fixed no-repeat;
       color: var(--teks);
       min-height: 100vh;
-      transition: color var(--transition);
     }
 
     /* ── BACKGROUND OVERLAY ───────────────────── */
@@ -186,7 +167,7 @@
     /* ── LINK GRID ────────────────────────────── */
     .links-list {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 12px;
     }
 
@@ -303,7 +284,7 @@
     .modal-url {
       font-size: .75rem;
       color: var(--teks-muted);
-      font-family: 'DM Mono', monospace;
+      font-family: inherit;
       margin-bottom: 20px;
       word-break: break-all;
     }
@@ -322,26 +303,6 @@
       transition: background var(--transition);
     }
     .modal-close:hover { background: var(--hijau-mid); }
-
-    /* ── DARK MODE TOGGLE ─────────────────────── */
-    .topbar {
-      display: flex; justify-content: flex-end;
-      margin-bottom: 0;
-      padding: 0 4px;
-      animation: fadeDown .4s ease both;
-    }
-    .btn-theme {
-      width: 36px; height: 36px;
-      border-radius: 999px;
-      background: var(--putih);
-      border: 1.5px solid var(--abu-2);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px;
-      box-shadow: var(--shadow-sm);
-      transition: all var(--transition);
-    }
-    .btn-theme:hover { border-color: var(--hijau); }
 
     /* ── EMPTY STATE ──────────────────────────── */
     .empty-state {
@@ -453,7 +414,7 @@
     /* ── LOADING BADGE ────────────────────────── */
     .klik-badge {
       font-size: .68rem;
-      font-family: 'DM Mono', monospace;
+      font-family: inherit;
       background: var(--emas-light);
       color: var(--emas);
       border-radius: 999px;
@@ -464,22 +425,31 @@
     @media (max-width: 900px) {
       .links-list { grid-template-columns: repeat(3, 1fr); gap: 10px; }
     }
+    @media (max-width: 680px) {
+      .links-list { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .page-wrap { padding: 16px 12px 60px; }
+      .header { padding: 28px 12px 20px; }
+      .logo-partner-row img { height: 70px; }
+    }
     @media (max-width: 480px) {
       .header-nama { font-size: 1rem; }
-      .page-wrap { padding: 16px 12px 60px; }
-      .links-list { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .link-card { padding: 12px 14px; }
+      .page-wrap { padding: 14px 10px 60px; }
+      .links-list { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .link-card { padding: 10px 10px; }
+      .link-icon { width: 32px; height: 32px; font-size: 16px; }
+      .link-title { font-size: .74rem; }
+      .logo-partner-row img { height: 56px; }
+      .filter-wrap { gap: 6px; }
+      .filter-btn { padding: 5px 10px; font-size: .75rem; }
     }
-    @media (max-width: 340px) {
+    @media (max-width: 360px) {
       .links-list { grid-template-columns: 1fr; }
+      .link-card { flex-direction: row; }
     }
   </style>
 </head>
 <body>
 <div class="page-wrap">
-  <div class="topbar">
-    <button class="btn-theme" id="btnTheme" title="Ganti tema"></button>
-  </div>
 
   <!-- HEADER -->
   <div class="header" id="siteHeader">
@@ -557,21 +527,6 @@ let allKategori = [];
 let activeFilter = 'all';
 let searchQuery = '';
 let settings = {};
-
-// ── THEME ─────────────────────────────────────────────
-const btnTheme = document.getElementById('btnTheme');
-const saved = localStorage.getItem('theme') || 'light';
-document.documentElement.setAttribute('data-theme', saved);
-const SVG_MOON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-const SVG_SUN  = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
-btnTheme.innerHTML = saved === 'dark' ? SVG_SUN : SVG_MOON;
-btnTheme.addEventListener('click', () => {
-  const cur = document.documentElement.getAttribute('data-theme');
-  const next = cur === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-  btnTheme.innerHTML = next === 'dark' ? SVG_SUN : SVG_MOON;
-});
 
 // ── API ───────────────────────────────────────────────
 async function fetchSettings() {

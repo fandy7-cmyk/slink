@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BSLINK DINKESPPKB</title>
+  <title>BSLINK Perencanaan</title>
   <meta name="description" content="Kumpulan link dari Dinas Kesehatan PPKB Kab. Banggai Laut" />
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --hijau:       #0077B6;
@@ -213,9 +213,22 @@
     @keyframes toastIn  { from { opacity:0; transform:translateY(14px) scale(.95); } to { opacity:1; transform:translateY(0) scale(1); } }
     @keyframes toastOut { from { opacity:1; } to { opacity:0; transform:translateY(6px) scale(.95); } }
 
-    @media (max-width: 480px) {
+    @media (max-width: 600px) {
       .page-wrap { padding: 24px 12px 60px; }
-      .bundle-title { font-size: 1.2rem; }
+      .logo-partner-row img { height: 72px; }
+    }
+    @media (max-width: 480px) {
+      .page-wrap { padding: 16px 10px 60px; }
+      .bundle-title { font-size: 1.15rem; }
+      .item-card { padding: 12px 14px; gap: 10px; }
+      .item-icon { width: 38px; height: 38px; font-size: 18px; }
+      .item-title { font-size: .88rem; }
+      .logo-partner-row img { height: 60px; }
+      .logo-partner-row { gap: 10px; }
+    }
+    @media (max-width: 360px) {
+      .item-card { padding: 10px 12px; }
+      .bundle-title { font-size: 1.05rem; }
     }
   </style>
 </head>
@@ -309,7 +322,7 @@ async function loadBundle(slug) {
     const { bundle, items } = await r.json();
 
     // Update page title & meta
-    document.title = `SLINK DINKESPPKB`;
+    document.title = `SLINK Perencanaan`;
 
     // Render header
     document.getElementById('headerContent').innerHTML = `

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SLINK DINKESPPKB</title>
+  <title>SLINK Perencanaan</title>
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" href="/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --hijau:       #0077B6;
@@ -99,6 +99,11 @@
     .btn-ghost:hover { background: var(--abu-2); }
     .btn-full { width: 100%; justify-content: center; }
     .btn-sm { padding: 6px 12px; font-size: .8rem; }
+    .btn-icon {
+      width: 32px; height: 32px; padding: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-sm); flex-shrink: 0;
+    }
     #loginError { color: var(--merah); font-size: .82rem; margin-top: 8px; display: none; }
 
     /* ── ADMIN LAYOUT ───────────────────────────── */
@@ -131,9 +136,10 @@
     .nav-end { margin-left: auto; display: flex; gap: 8px; align-items: center; }
     .nav-user { font-size: .8rem; color: var(--teks-muted); }
     .btn-logout {
-      padding: 6px 14px; border-radius: 999px;
+      width: 34px; height: 34px; padding: 0;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: var(--radius-sm);
       background: var(--abu-1); border: 1.5px solid var(--abu-2);
-      font-family: inherit; font-size: .8rem; font-weight: 600;
       color: var(--merah); cursor: pointer;
       transition: all var(--transition);
     }
@@ -156,7 +162,7 @@
       padding: 18px; box-shadow: 0 2px 12px rgba(0,0,0,.08);
     }
     .stat-label { font-size: .75rem; color: var(--teks-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
-    .stat-value { font-size: 2rem; font-weight: 800; color: var(--hijau); font-family: 'DM Mono', monospace; margin-top: 4px; }
+    .stat-value { font-size: 2rem; font-weight: 800; color: var(--hijau); font-family: inherit; margin-top: 4px; }
     .stat-sub   { font-size: .75rem; color: var(--teks-muted); margin-top: 2px; }
 
     /* ── TABLE ──────────────────────────────────── */
@@ -175,7 +181,7 @@
     }
     .card-title { font-weight: 700; font-size: .95rem; }
     table { width: 100%; border-collapse: collapse; }
-    th { padding: 10px 10px; text-align: left; font-size: .72rem; font-weight: 700; color: var(--teks-muted); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1.5px solid var(--abu-2); background: rgba(240,248,251,.6); }
+    th { padding: 10px 10px; text-align: left; font-size: .72rem; font-weight: 700; color: var(--teks-muted); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1.5px solid var(--abu-2); background: rgba(240,248,251,.6); white-space: nowrap; }
     td { padding: 10px 10px; border-bottom: 1px solid var(--abu-2); font-size: .85rem; vertical-align: middle; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(224,244,248,.4); }
@@ -199,14 +205,29 @@
     .modal-overlay.open { display: flex; }
     .modal-box {
       background: var(--putih); border-radius: 18px;
-      padding: 28px 24px; max-width: 480px; width: 100%;
-      max-height: 90vh; overflow-y: auto;
+      padding: 28px 32px; max-width: 680px; width: 100%;
+      max-height: 95vh; overflow-y: auto;
       animation: popIn .3s ease both;
     }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .modal-title-text { font-weight: 800; font-size: 1.05rem; }
     .btn-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--teks-muted); line-height: 1; }
     .modal-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+
+    /* ── MODAL LINK 2-KOLOM ─────────────────────── */
+    #modalLink .modal-box { max-width: 720px; }
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    }
+    .form-row .form-group { margin-bottom: 0; }
+    .form-row-3 {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px;
+    }
+    .form-row-3 .form-group { margin-bottom: 0; }
+    @media (max-width: 600px) {
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+      #modalLink .modal-box { max-width: 100%; }
+    }
 
     /* ── IKON PICKER ────────────────────────────── */
     .ikon-grid {
@@ -221,7 +242,7 @@
     .ikon-btn.selected { background: var(--hijau-light); border-color: var(--hijau); }
 
     /* ── TOP LINKS TABLE ────────────────────────── */
-    .rank { font-family: 'DM Mono', monospace; color: var(--teks-muted); font-size: .8rem; }
+    .rank { font-family: inherit; color: var(--teks-muted); font-size: .8rem; }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
     @keyframes popIn  { from { opacity:0; transform:scale(.94); } to { opacity:1; transform:scale(1); } }
@@ -235,13 +256,33 @@
     }
     input[type="color"] { width: 32px; height: 32px; padding: 0; border: none; cursor: pointer; }
 
+    @media (max-width: 768px) {
+      .admin-content { padding: 16px 10px; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    }
     @media (max-width: 640px) {
-      .admin-nav { padding: 0 12px; }
-      .nav-brand { font-size: .82rem; margin-right: 12px; }
-      .nav-tab { padding: 14px 10px 12px; font-size: .78rem; }
-      .admin-content { padding: 16px 12px; }
-      .stat-value { font-size: 1.5rem; }
-      th, td { padding: 8px 10px; }
+      .admin-nav { padding: 0 10px; flex-wrap: wrap; gap: 0; }
+      .nav-brand { font-size: .8rem; margin-right: 8px; padding: 12px 0; }
+      .nav-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; flex: 1 1 100%; order: 3; border-top: 1px solid rgba(0,0,0,.06); }
+      .nav-tabs::-webkit-scrollbar { display: none; }
+      .nav-tab { padding: 12px 10px 10px; font-size: .76rem; white-space: nowrap; }
+      .nav-end { margin-left: auto; }
+      .nav-user { display: none; }
+      .admin-content { padding: 12px 8px; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+      .stat-value { font-size: 1.4rem; }
+      .stat-card { padding: 14px; }
+      th, td { padding: 7px 8px; font-size: .8rem; }
+      .card-header { padding: 12px 12px; }
+      .modal-box { padding: 20px 16px; }
+      .btn { padding: 8px 14px; font-size: .84rem; }
+      .btn-sm { padding: 5px 10px; font-size: .76rem; }
+      .login-box { padding: 28px 20px; }
+    }
+    @media (max-width: 400px) {
+      .stat-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+      .stat-value { font-size: 1.2rem; }
+      .nav-brand { font-size: .72rem; }
     }
 
     /* ── CUSTOM TOAST ─────────────────────────────── */
@@ -296,6 +337,37 @@
     .confirm-icon { font-size: 2.5rem; margin-bottom: 12px; }
     .confirm-msg  { font-size: .95rem; font-weight: 600; color: var(--teks); line-height: 1.5; margin-bottom: 20px; }
     .confirm-actions { display: flex; gap: 10px; justify-content: center; }
+
+    /* ── RESPONSIVE TABLE ─────────────────────────── */
+    @media (max-width: 540px) {
+      .td-actions { flex-direction: column; gap: 4px; }
+      .td-actions .btn { width: 100%; justify-content: center; }
+    }
+    /* ── LOGIN PAGE MOBILE ────────────────────────── */
+    @media (max-width: 440px) {
+      .login-box { padding: 24px 16px; border-radius: 16px; }
+      .login-title { font-size: 1.1rem; }
+    }
+
+    /* ── PAGINATION ───────────────────────────────── */
+    .pagination {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; padding: 14px 16px;
+      border-top: 1.5px solid var(--abu-2);
+      flex-wrap: wrap;
+    }
+    .pg-btn {
+      min-width: 34px; height: 34px; padding: 0 8px;
+      border-radius: var(--radius-sm); border: 1.5px solid var(--abu-2);
+      background: var(--putih); color: var(--teks-mid);
+      font-family: inherit; font-size: .82rem; font-weight: 600;
+      cursor: pointer; transition: all var(--transition);
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .pg-btn:hover:not(:disabled) { background: var(--hijau-light); border-color: var(--hijau); color: var(--hijau); }
+    .pg-btn.active { background: var(--hijau); border-color: var(--hijau); color: #fff; }
+    .pg-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .pg-info { font-size: .78rem; color: var(--teks-muted); padding: 0 4px; }
   </style>
 </head>
 <body>
@@ -336,11 +408,11 @@
       <div class="nav-tab" data-tab="kategori">Kategori</div>
       <div class="nav-tab" data-tab="bundle">Bundle</div>
       <div class="nav-tab" data-tab="shortlink">Short Link</div>
-      <div class="nav-tab" data-tab="admin">Admin</div>
+
     </div>
     <div class="nav-end">
       <span class="nav-user" id="navUser"></span>
-      <button class="btn-logout" id="btnLogout">Keluar</button>
+      <button class="btn-logout" id="btnLogout" title="Keluar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></button>
     </div>
   </nav>
 
@@ -370,20 +442,20 @@
           <button class="btn btn-primary btn-sm" id="btnTambahLink">+ Tambah Link</button>
         </div>
         <div style="overflow-x:auto">
-          <table style="table-layout:fixed;width:100%">
-            <colgroup>
-              <col style="width:44px">   <!-- Ikon -->
-              <col style="width:auto">   <!-- Judul -->
-              <col style="width:130px">  <!-- Kategori -->
-              <col style="width:100px">  <!-- Short Link -->
-              <col style="width:52px">   <!-- Klik -->
-              <col style="width:72px">   <!-- Status -->
-              <col style="width:110px">  <!-- Aksi -->
-            </colgroup>
-            <thead><tr><th>Ikon</th><th>Judul</th><th>Kategori</th><th>Short Link</th><th>Klik</th><th>Status</th><th>Aksi</th></tr></thead>
+          <table style="width:100%">
+            <thead><tr>
+              <th style="width:36px">Ikon</th>
+              <th>Judul</th>
+              <th style="width:110px">Kategori</th>
+              <th style="width:80px;white-space:nowrap">Short Link</th>
+              <th style="width:44px">Klik</th>
+              <th style="width:64px">Status</th>
+              <th style="width:100px">Aksi</th>
+            </tr></thead>
             <tbody id="linksTableBody"><tr class="empty-row"><td colspan="7">Memuat data...</td></tr></tbody>
           </table>
         </div>
+        <div class="pagination" id="linksPagination" style="display:none"></div>
       </div>
     </div>
 
@@ -398,6 +470,7 @@
           <thead><tr><th>Nama</th><th>Jumlah Link</th><th>Aksi</th></tr></thead>
           <tbody id="kategoriTableBody"><tr class="empty-row"><td colspan="4">Memuat data...</td></tr></tbody>
         </table>
+        <div class="pagination" id="kategoriPagination" style="display:none"></div>
       </div>
     </div>
 
@@ -417,6 +490,7 @@
               <tbody id="bundleTableBody"><tr class="empty-row"><td colspan="5">Memuat data...</td></tr></tbody>
             </table>
           </div>
+          <div class="pagination" id="bundlePagination" style="display:none"></div>
         </div>
       </div>
 
@@ -436,7 +510,7 @@
           <div id="bundleInfoDisplay"></div>
           <!-- URL share -->
           <div id="bundleShareRow" style="margin-top:14px;padding:10px 14px;background:var(--abu-1);border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px">
-            <span style="font-family:'DM Mono',monospace;font-size:.78rem;color:var(--teks-mid);flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" id="bundleShareUrl"></span>
+            <span style="font-family: inherit;font-size:.78rem;color:var(--teks-mid);flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis" id="bundleShareUrl"></span>
             <button class="btn btn-ghost btn-sm" id="btnCopyBundleUrl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Salin</button>
             <a class="btn btn-primary btn-sm" id="btnOpenBundle" href="#" target="_blank"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg> Buka</a>
           </div>
@@ -454,60 +528,12 @@
               <tbody id="bundleItemsBody"><tr class="empty-row"><td colspan="4">Belum ada link.</td></tr></tbody>
             </table>
           </div>
+          <div class="pagination" id="bundleItemsPagination" style="display:none"></div>
         </div>
       </div>
     </div>
 
-    <!-- TAB: ADMIN -->
-    <div class="tab-panel" id="tab-admin">
-      <div class="card" style="padding:24px;max-width:480px">
-        <div class="card-title" style="margin-bottom:20px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Tambah Admin Baru</div>
-        <p style="font-size:.85rem;color:var(--teks-muted);margin-bottom:20px;line-height:1.6">
-          Daftarkan akun admin baru. Setiap akun bisa login ke panel ini dan mengelola semua data.
-        </p>
-        <div class="form-group">
-          <label>Nama Lengkap <span style="color:var(--merah)">*</span></label>
-          <input type="text" id="aNewNama" placeholder="Contoh: Budi Santoso" />
-        </div>
-        <div class="form-group">
-          <label>Email <span style="color:var(--merah)">*</span></label>
-          <input type="email" id="aNewEmail" placeholder="admin@dinkesbl.go.id" />
-        </div>
-        <div class="form-group">
-          <label>Password <span style="color:var(--merah)">*</span></label>
-          <div class="pw-wrap">
-            <input type="password" id="aNewPassword" placeholder="Minimal 8 karakter" />
-            <button type="button" class="pw-toggle" onclick="togglePw('aNewPassword',this)" tabindex="-1" aria-label="Tampilkan password">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Konfirmasi Password <span style="color:var(--merah)">*</span></label>
-          <div class="pw-wrap">
-            <input type="password" id="aNewPassword2" placeholder="Ulangi password" />
-            <button type="button" class="pw-toggle" onclick="togglePw('aNewPassword2',this)" tabindex="-1" aria-label="Tampilkan password">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Setup Key <span style="color:var(--merah)">*</span></label>
-          <div class="pw-wrap">
-            <input type="password" id="aSetupKey" placeholder="Kunci setup dari .env" />
-            <button type="button" class="pw-toggle" onclick="togglePw('aSetupKey',this)" tabindex="-1" aria-label="Tampilkan kunci">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-          <div style="font-size:.75rem;color:var(--teks-muted);margin-top:4px">Nilai <code>SETUP_KEY</code> dari environment variable Netlify.</div>
-        </div>
-        <div id="adminRegError" style="color:var(--merah);font-size:.82rem;display:none;margin-bottom:12px"></div>
-        <div id="adminRegSuccess" style="color:var(--hijau);font-size:.82rem;display:none;margin-bottom:12px"></div>
-        <button class="btn btn-primary" id="btnRegisterAdmin">Daftarkan Admin</button>
-      </div>
-    </div>
-
-    <!-- TAB: SHORT LINK -->
+<!-- TAB: SHORT LINK -->
     <div class="tab-panel" id="tab-shortlink">
 
       <!-- STAT ROW -->
@@ -545,6 +571,7 @@
             </tbody>
           </table>
         </div>
+        <div class="pagination" id="slPagination" style="display:none"></div>
       </div>
     </div>
 
@@ -559,9 +586,15 @@
       <div class="modal-title-text" id="modalLinkTitle">Tambah Link</div>
       <button class="btn-close" id="closeLinkModal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
-    <div class="form-group">
-      <label>Judul <span style="color:var(--merah)">*</span></label>
-      <input type="text" id="fJudul" placeholder="Contoh: Profil Puskesmas" />
+    <div class="form-row" style="margin-bottom:14px">
+      <div class="form-group">
+        <label>Judul <span style="color:var(--merah)">*</span></label>
+        <input type="text" id="fJudul" placeholder="Contoh: Profil Puskesmas" />
+      </div>
+      <div class="form-group">
+        <label>Kategori</label>
+        <select id="fKategori"><option value="">– Tanpa Kategori –</option></select>
+      </div>
     </div>
     <div class="form-group">
       <label>URL <span style="color:var(--merah)">*</span></label>
@@ -571,40 +604,33 @@
       <label>Deskripsi (opsional)</label>
       <textarea id="fDeskripsi" rows="2" placeholder="Keterangan singkat..."></textarea>
     </div>
-    <div class="form-group">
-      <label>Kategori</label>
-      <select id="fKategori"><option value="">– Tanpa Kategori –</option></select>
-    </div>
-    <div class="form-group">
-      <label>Ikon (pilih emoji)</label>
-      <input type="text" id="fIkon" placeholder="🔗" style="width:80px;text-align:center;font-size:1.2rem" maxlength="4" />
-      <div class="ikon-grid" id="ikonGrid"></div>
-    </div>
-    <div class="form-group">
-      <label>Warna Ikon</label>
-      <div style="display:flex;gap:10px;align-items:center">
-        <input type="color" id="fWarna" value="#0077B6" />
-        <span id="fWarnaLabel" style="font-family:'DM Mono',monospace;font-size:.85rem">#0077B6</span>
+    <div class="form-row" style="margin-bottom:14px;align-items:start">
+      <div class="form-group">
+        <label>Ikon (pilih emoji)</label>
+        <input type="text" id="fIkon" placeholder="🔗" style="width:80px;text-align:center;font-size:1.2rem" maxlength="4" />
+        <div class="ikon-grid" id="ikonGrid"></div>
       </div>
-    </div>
-    <div class="form-group">
-      <label>Short Link <span style="color:var(--teks-muted);font-weight:400">(opsional)</span></label>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap;font-family:'DM Mono',monospace">/</span>
-        <input type="text" id="fSlugPendek" placeholder="contoh: dokumen2026"
-          style="font-family:'DM Mono',monospace"
-          oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9\-]/g,'')" />
+      <div class="form-group">
+        <label>Warna Ikon</label>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px">
+          <input type="color" id="fWarna" value="#0077B6" />
+          <span id="fWarnaLabel" style="font-size:.85rem">#0077B6</span>
+        </div>
+        <label>Short Link <span style="color:var(--teks-muted);font-weight:400">(opsional)</span></label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap">/</span>
+          <input type="text" id="fSlugPendek" placeholder="contoh: dokumen2026"
+            oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9\-]/g,'')" />
+        </div>
+        <div style="font-size:.75rem;color:var(--teks-muted);margin-top:4px">
+          Hanya huruf kecil, angka, dan tanda hubung.
+        </div>
+        <div id="shortLinkPreview" style="display:none;margin-top:6px;padding:8px 12px;background:var(--hijau-light);border-radius:8px;font-size:.78rem;color:var(--hijau)"></div>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:14px">
+          <input type="checkbox" id="fAktif" checked style="width:auto" />
+          Tampilkan di halaman publik
+        </label>
       </div>
-      <div style="font-size:.75rem;color:var(--teks-muted);margin-top:4px">
-        Hanya huruf kecil, angka, dan tanda hubung. Kosongkan jika tidak perlu short link.
-      </div>
-      <div id="shortLinkPreview" style="display:none;margin-top:6px;padding:8px 12px;background:var(--hijau-light);border-radius:8px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--hijau)"></div>
-    </div>
-    <div class="form-group">
-      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-        <input type="checkbox" id="fAktif" checked style="width:auto" />
-        Tampilkan di halaman publik
-      </label>
     </div>
     <div id="linkError" style="color:var(--merah);font-size:.82rem;display:none;margin-top:4px"></div>
     <div class="modal-footer">
@@ -743,12 +769,12 @@
     <div class="form-group">
       <label>Slug Short Link <span style="color:var(--merah)">*</span></label>
       <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap;font-family:'DM Mono',monospace">/</span>
+        <span style="font-size:.82rem;color:var(--teks-muted);white-space:nowrap;font-family: inherit;">/</span>
         <input type="text" id="slSlug" placeholder="contoh: form2026"
-          style="font-family:'DM Mono',monospace"
+          style="font-family: inherit;"
           oninput="this.value=this.value.toLowerCase().replace(/[^a-z0-9\-]/g,'');updateSLPreview()" />
       </div>
-      <div id="slPreviewBox" style="display:none;margin-top:8px;padding:8px 12px;background:var(--hijau-light);border-radius:8px;font-family:'DM Mono',monospace;font-size:.78rem;color:var(--hijau)"></div>
+      <div id="slPreviewBox" style="display:none;margin-top:8px;padding:8px 12px;background:var(--hijau-light);border-radius:8px;font-family: inherit;font-size:.78rem;color:var(--hijau)"></div>
     </div>
 
     <!-- AKTIF -->
@@ -766,6 +792,9 @@
     </div>
   </div>
 </div>
+
+
+
 
 <script>
 // ── SHOW / HIDE PASSWORD ──────────────────────────────
@@ -792,6 +821,27 @@ let currentBundleId = null;
 let currentBundleItems = [];
 let editBundleId = null;
 let editBundleItemId = null;
+
+// ── COPY SVG ICON (reusable) ─────────────────────────
+const SVG_COPY = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+
+// ── COPY HELPERS ──────────────────────────────────────
+async function copyLink(id) {
+  const l = allLinks.find(x => x.id === id);
+  if (!l) return;
+  const text = l.slug_pendek ? `${location.origin}/${l.slug_pendek}` : l.url;
+  try {
+    await navigator.clipboard.writeText(text);
+    showToast(l.slug_pendek ? 'Short link disalin!' : 'URL disalin!', 'success');
+  } catch { showToast('Gagal menyalin', 'error'); }
+}
+
+async function copyBundleUrl(slug) {
+  try {
+    await navigator.clipboard.writeText(`${location.origin}/${slug}`);
+    showToast('URL bundle disalin!', 'success');
+  } catch { showToast('Gagal menyalin', 'error'); }
+}
 
 // ── INIT ─────────────────────────────────────────────
 if (token && adminInfo) showAdmin();
@@ -901,38 +951,45 @@ async function loadLinks() {
   const r = await fetch('/api/links', { headers: authHeaders() });
   const d = await r.json();
   allLinks = d.links || [];
+  pgState.links = 1;
   renderLinksTable();
 }
 
-function renderLinksTable() {
+function renderLinksTable(page) {
+  if (!pgState.links) pgState.links = 1;
+  if (page !== undefined) pgState.links = page;
+  const p = pgState.links;
   const tbody = document.getElementById('linksTableBody');
   if (!allLinks.length) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Belum ada link. Tambah sekarang!</td></tr>';
-    return;
+    document.getElementById('linksPagination').style.display='none'; return;
   }
-  tbody.innerHTML = allLinks.map(l => `
+  const slice = allLinks.slice((p-1)*PG, p*PG);
+  tbody.innerHTML = slice.map(l => `
     <tr>
       <td style="font-size:1.3rem">${esc(l.ikon||'🔗')}</td>
       <td style="overflow:hidden">
         <strong style="display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.judul)}</strong>
-        <small style="font-family:'DM Mono',monospace;color:var(--teks-muted);font-size:.72rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.url.substring(0,50))}${l.url.length>50?'…':''}</small>
+        <small style="font-family: inherit;color:var(--teks-muted);font-size:.72rem;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.url.substring(0,50))}${l.url.length>50?'…':''}</small>
       </td>
       <td>${l.kategori_nama ? `<span class="badge badge-green">${esc(l.kategori_nama)}</span>` : '<span class="badge badge-gray">–</span>'}</td>
-      <td style="font-family:'DM Mono',monospace;font-size:.78rem">
+      <td style="font-family: inherit;font-size:.78rem">
         ${l.slug_pendek
           ? `<a href="/${esc(l.slug_pendek)}" target="_blank" style="color:var(--hijau);text-decoration:none" title="Buka short link">/${esc(l.slug_pendek)} 🔗</a>`
           : '<span style="color:var(--teks-muted)">–</span>'
         }
       </td>
-      <td style="font-family:'DM Mono',monospace">${l.total_klik ?? 0}</td>
+      <td style="font-family: inherit;">${l.total_klik ?? 0}</td>
       <td>${l.aktif ? '<span class="badge badge-green">Aktif</span>' : '<span class="badge badge-gray">Nonaktif</span>'}</td>
       <td>
         <div class="td-actions">
-          <button class="btn btn-ghost btn-sm" onclick="openEditLink(${l.id})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="hapusLink(${l.id})">Hapus</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="${l.slug_pendek ? 'Salin Short Link' : 'Salin URL'}" onclick="copyLink(${l.id})">${SVG_COPY}</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditLink(${l.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn btn-danger btn-sm btn-icon" title="Hapus" onclick="hapusLink(${l.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
         </div>
       </td>
     </tr>`).join('');
+  renderPagination('linksPagination', allLinks.length, p, 'renderLinksTable');
 }
 
 // ── MODAL LINK ────────────────────────────────────────
@@ -1061,26 +1118,31 @@ async function loadKategori() {
   const r = await fetch('/api/kategori');
   const d = await r.json();
   allKategori = d.kategori || [];
+  pgState.kategori = 1;
   renderKategoriTable();
 }
-function renderKategoriTable() {
+function renderKategoriTable(page) {
+  if (!pgState.kategori) pgState.kategori = 1;
+  if (page !== undefined) pgState.kategori = page;
+  const p = pgState.kategori;
   const tbody = document.getElementById('kategoriTableBody');
   if (!allKategori.length) {
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Belum ada kategori.</td></tr>';
-    return;
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="3">Belum ada kategori.</td></tr>';
+    document.getElementById('kategoriPagination').style.display='none'; return;
   }
-  tbody.innerHTML = allKategori.map(k => `
+  const slice = allKategori.slice((p-1)*PG, p*PG);
+  tbody.innerHTML = slice.map(k => `
     <tr>
       <td><strong>${esc(k.nama)}</strong></td>
-      <td style="font-family:'DM Mono',monospace">${k.jumlah_link}</td>
       <td><span class="badge badge-green">${k.jumlah_link} link</span></td>
       <td>
         <div class="td-actions">
-          <button class="btn btn-ghost btn-sm" onclick="openEditKat(${k.id})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="hapusKat(${k.id})">Hapus</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditKat(${k.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn btn-danger btn-sm btn-icon" title="Hapus" onclick="hapusKat(${k.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
         </div>
       </td>
     </tr>`).join('');
+  renderPagination('kategoriPagination', allKategori.length, p, 'renderKategoriTable');
 }
 
 document.getElementById('btnTambahKategori').addEventListener('click', () => openKatModal());
@@ -1137,29 +1199,36 @@ async function loadBundles() {
     const r = await fetch('/api/bundles', { headers: authHeaders() });
     const d = await r.json();
     allBundles = d.bundles || [];
+    pgState.bundle = 1;
     renderBundleTable();
   } catch {}
 }
 
-function renderBundleTable() {
+function renderBundleTable(page) {
+  if (!pgState.bundle) pgState.bundle = 1;
+  if (page !== undefined) pgState.bundle = page;
+  const p = pgState.bundle;
   const tbody = document.getElementById('bundleTableBody');
   if (!allBundles.length) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Belum ada bundle. Buat sekarang!</td></tr>';
-    return;
+    document.getElementById('bundlePagination').style.display='none'; return;
   }
-  tbody.innerHTML = allBundles.map(b => `
+  const slice = allBundles.slice((p-1)*PG, p*PG);
+  tbody.innerHTML = slice.map(b => `
     <tr>
       <td><strong>${esc(b.judul)}</strong></td>
-      <td style="font-family:'DM Mono',monospace;font-size:.75rem;color:var(--teks-muted)">/${esc(b.slug)}</td>
+      <td style="font-family: inherit;font-size:.75rem;color:var(--teks-muted)">/${esc(b.slug)}</td>
       <td><span class="badge badge-green">${b.jumlah_item} link</span></td>
       <td>${b.aktif ? '<span class="badge badge-green">Aktif</span>' : '<span class="badge badge-gray">Nonaktif</span>'}</td>
       <td>
         <div class="td-actions">
-          <button class="btn btn-ghost btn-sm" onclick="openBundleDetail(${b.id})">Kelola</button>
-          <button class="btn btn-danger btn-sm" onclick="hapusBundle(${b.id})">Hapus</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="Salin URL Bundle" onclick="copyBundleUrl('${esc(b.slug)}')">${SVG_COPY}</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="Kelola" onclick="openBundleDetail(${b.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+          <button class="btn btn-danger btn-sm btn-icon" title="Hapus" onclick="hapusBundle(${b.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
         </div>
       </td>
     </tr>`).join('');
+  renderPagination('bundlePagination', allBundles.length, p, 'renderBundleTable');
 }
 
 // Buka/tutup detail bundle
@@ -1176,6 +1245,7 @@ async function refreshBundleDetail() {
     const d = await r.json();
     const b = d.bundle;
     currentBundleItems = d.items || [];
+    pgState.bundleItems = 1;
 
     document.getElementById('bundleDetailTitle').textContent = b.judul;
 
@@ -1197,29 +1267,34 @@ async function refreshBundleDetail() {
   } catch {}
 }
 
-function renderBundleItems() {
+function renderBundleItems(page) {
+  if (!pgState.bundleItems) pgState.bundleItems = 1;
+  if (page !== undefined) pgState.bundleItems = page;
+  const p = pgState.bundleItems;
   const tbody = document.getElementById('bundleItemsBody');
   if (!currentBundleItems.length) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Belum ada link. Tambah sekarang!</td></tr>';
-    return;
+    document.getElementById('bundleItemsPagination').style.display='none'; return;
   }
-  tbody.innerHTML = currentBundleItems.map(item => `
+  const slice = currentBundleItems.slice((p-1)*PG, p*PG);
+  tbody.innerHTML = slice.map(item => `
     <tr>
       <td style="font-size:1.2rem">${esc(item.ikon||'🔗')}</td>
       <td>
         <strong>${esc(item.judul)}</strong>
         ${item.deskripsi ? `<br><small style="color:var(--teks-muted)">${esc(item.deskripsi)}</small>` : ''}
       </td>
-      <td style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--teks-muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
+      <td style="font-family: inherit;font-size:.72rem;color:var(--teks-muted);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">
         ${esc(item.url.substring(0,50))}${item.url.length>50?'…':''}
       </td>
       <td>
         <div class="td-actions">
-          <button class="btn btn-ghost btn-sm" onclick="openEditBundleItem(${item.id})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="hapusBundleItem(${item.id})">Hapus</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditBundleItem(${item.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn btn-danger btn-sm btn-icon" title="Hapus" onclick="hapusBundleItem(${item.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
         </div>
       </td>
     </tr>`).join('');
+  renderPagination('bundleItemsPagination', currentBundleItems.length, p, 'renderBundleItems');
 }
 
 document.getElementById('btnBackBundle').addEventListener('click', () => {
@@ -1396,62 +1471,6 @@ async function hapusBundleItem(id) {
 }
 
 // ── REGISTER ADMIN ────────────────────────────────────
-document.getElementById('btnRegisterAdmin').addEventListener('click', async () => {
-  const errEl = document.getElementById('adminRegError');
-  const sucEl = document.getElementById('adminRegSuccess');
-  const btn   = document.getElementById('btnRegisterAdmin');
-  errEl.style.display = 'none';
-  sucEl.style.display = 'none';
-
-  const nama      = document.getElementById('aNewNama').value.trim();
-  const email     = document.getElementById('aNewEmail').value.trim();
-  const password  = document.getElementById('aNewPassword').value;
-  const password2 = document.getElementById('aNewPassword2').value;
-  const setup_key = document.getElementById('aSetupKey').value;
-
-  if (!nama || !email || !password || !setup_key) {
-    errEl.textContent = 'Semua field wajib diisi.';
-    errEl.style.display = 'block'; return;
-  }
-  if (password.length < 8) {
-    errEl.textContent = 'Password minimal 8 karakter.';
-    errEl.style.display = 'block'; return;
-  }
-  if (password !== password2) {
-    errEl.textContent = 'Konfirmasi password tidak cocok.';
-    errEl.style.display = 'block'; return;
-  }
-
-  btn.disabled = true;
-  btn.innerHTML = '<span class="spinner"></span> Mendaftarkan...';
-
-  try {
-    const r = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nama, email, password, setup_key }),
-    });
-    const d = await r.json();
-    if (!r.ok) {
-      errEl.textContent = d.error || 'Gagal mendaftarkan admin.';
-      errEl.style.display = 'block';
-    } else {
-      sucEl.textContent = `✓ Admin "${nama}" berhasil didaftarkan!`;
-      sucEl.style.display = 'block';
-      document.getElementById('aNewNama').value = '';
-      document.getElementById('aNewEmail').value = '';
-      document.getElementById('aNewPassword').value = '';
-      document.getElementById('aNewPassword2').value = '';
-      document.getElementById('aSetupKey').value = '';
-    }
-  } catch {
-    errEl.textContent = 'Koneksi gagal. Coba lagi.';
-    errEl.style.display = 'block';
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = 'Daftarkan Admin';
-  }
-});
 
 // ── SHORT LINK ────────────────────────────────────────
 let allShortLinks = [];   // links yang punya slug_pendek
@@ -1465,6 +1484,7 @@ async function loadShortLinks() {
     const d = await r.json();
     // allLinks mungkin belum dimuat, simpan local
     allShortLinks = (d.links || []).filter(l => l.slug_pendek);
+    pgState.sl = 1;
     renderShortLinkTable(allShortLinks);
     updateSLStats(d.links || []);
   } catch {
@@ -1482,45 +1502,57 @@ function updateSLStats(allL) {
   document.getElementById('slStatTop').textContent = top ? `/${top.slug_pendek}` : '–';
 }
 
-function renderShortLinkTable(links) {
+let _slFilteredLinks = [];
+function renderShortLinkTable(linksOrPage) {
+  // Accept either a links array (from filter) or a page number
+  if (Array.isArray(linksOrPage)) {
+    _slFilteredLinks = linksOrPage;
+    pgState.sl = 1;
+  } else if (linksOrPage !== undefined) {
+    pgState.sl = linksOrPage;
+  }
+  if (!pgState.sl) pgState.sl = 1;
+  const p = pgState.sl;
+  const links = _slFilteredLinks;
   const tbody = document.getElementById('shortLinkTableBody');
   if (!links.length) {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Belum ada short link. Klik "+ Buat Short Link" untuk mulai.</td></tr>';
-    return;
+    document.getElementById('slPagination').style.display='none'; return;
   }
-  tbody.innerHTML = links.map(l => `
+  const slice = links.slice((p-1)*PG, p*PG);
+  tbody.innerHTML = slice.map(l => `
     <tr>
       <td>
         <a href="/${esc(l.slug_pendek)}" target="_blank"
-           style="font-family:'DM Mono',monospace;font-size:.82rem;color:var(--hijau);font-weight:700;text-decoration:none">
+           style="font-family: inherit;font-size:.82rem;color:var(--hijau);font-weight:700;text-decoration:none">
           /${esc(l.slug_pendek)}
         </a>
-        <button title="Salin" onclick="copySL('/${esc(l.slug_pendek)}')"
-          style="margin-left:6px;background:none;border:none;cursor:pointer;color:var(--teks-muted);vertical-align:middle;padding:2px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
       </td>
       <td>
         <strong style="font-size:.88rem">${esc(l.judul)}</strong><br>
-        <small style="font-family:'DM Mono',monospace;color:var(--teks-muted);font-size:.72rem">${esc(l.url.substring(0,45))}${l.url.length>45?'…':''}</small>
+        <small style="font-family: inherit;color:var(--teks-muted);font-size:.72rem">${esc(l.url.substring(0,45))}${l.url.length>45?'…':''}</small>
       </td>
-      <td style="font-family:'DM Mono',monospace">
+      <td style="font-family: inherit;">
         <span class="badge badge-gold">${(l.total_klik||0).toLocaleString('id')}</span>
       </td>
       <td>${l.aktif ? '<span class="badge badge-green">Aktif</span>' : '<span class="badge badge-gray">Nonaktif</span>'}</td>
       <td>
         <div class="td-actions">
-          <button class="btn btn-ghost btn-sm" onclick="openEditSL(${l.id})">Edit</button>
-          <button class="btn btn-danger btn-sm" onclick="hapusSL(${l.id})">Hapus Slug</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="Salin Short Link" onclick="copySL('/${esc(l.slug_pendek)}')">${SVG_COPY}</button>
+          <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="openEditSL(${l.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+          <button class="btn btn-danger btn-sm btn-icon" title="Hapus Slug" onclick="hapusSL(${l.id})"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
         </div>
       </td>
     </tr>`).join('');
+  renderPagination('slPagination', links.length, p, 'renderShortLinkTable');
 }
-
 function filterShortLinks() {
   const q = document.getElementById('slSearch').value.toLowerCase();
   const filtered = allShortLinks.filter(l =>
     (l.slug_pendek||'').toLowerCase().includes(q) ||
     (l.judul||'').toLowerCase().includes(q)
   );
+  pgState.sl = 1;
   renderShortLinkTable(filtered);
 }
 
@@ -1599,7 +1631,7 @@ function onSLLinkSelect() {
   const l = allLinks.find(x => x.id === id);
   if (!l) return;
   preview.style.display = 'block';
-  preview.innerHTML = `<strong>${esc(l.ikon||'🔗')} ${esc(l.judul)}</strong><br><span style="font-family:'DM Mono',monospace;font-size:.72rem;color:var(--teks-muted)">${esc(l.url)}</span>`;
+  preview.innerHTML = `<strong>${esc(l.ikon||'🔗')} ${esc(l.judul)}</strong><br><span style="font-family: inherit;font-size:.72rem;color:var(--teks-muted)">${esc(l.url)}</span>`;
 }
 
 function updateSLPreview() {
@@ -1693,6 +1725,31 @@ async function hapusSL(id) {
 async function refreshSLData() {
   await loadLinks();       // refresh tabel Links juga
   await loadShortLinks();
+}
+
+
+// ── PAGINATION HELPER ─────────────────────────────────
+const PG = 10; // items per page
+const pgState = {};
+
+function renderPagination(containerId, total, page, onChangeFn) {
+  const container = document.getElementById(containerId);
+  const totalPages = Math.ceil(total / PG);
+  if (totalPages <= 1) { container.style.display = 'none'; return; }
+  container.style.display = 'flex';
+  const start = (page - 1) * PG + 1;
+  const end   = Math.min(page * PG, total);
+  let html = `<span class="pg-info">${start}–${end} dari ${total}</span>`;
+  html += `<button class="pg-btn" ${page===1?'disabled':''} onclick="${onChangeFn}(${page-1})">‹</button>`;
+  // Page numbers: show max 5 around current
+  let startP = Math.max(1, page-2), endP = Math.min(totalPages, page+2);
+  if (startP > 1) html += `<button class="pg-btn" onclick="${onChangeFn}(1)">1</button>${startP>2?'<span class="pg-info">…</span>':''}`;
+  for (let p = startP; p <= endP; p++) {
+    html += `<button class="pg-btn${p===page?' active':''}" onclick="${onChangeFn}(${p})">${p}</button>`;
+  }
+  if (endP < totalPages) html += `${endP<totalPages-1?'<span class="pg-info">…</span>':''}<button class="pg-btn" onclick="${onChangeFn}(${totalPages})">${totalPages}</button>`;
+  html += `<button class="pg-btn" ${page===totalPages?'disabled':''} onclick="${onChangeFn}(${page+1})">›</button>`;
+  container.innerHTML = html;
 }
 
 function esc(str) {

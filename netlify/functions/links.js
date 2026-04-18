@@ -41,8 +41,8 @@ export const handler = async (event) => {
       }
       return jsonResponse({ links: rows });
     } catch (err) {
-      console.error(err);
-      return errorResponse('Gagal mengambil data links');
+      console.error('[GET /api/links]', err);
+      return errorResponse('Gagal mengambil data links: ' + err.message);
     }
   }
 
@@ -56,15 +56,24 @@ export const handler = async (event) => {
     const { judul, url, deskripsi, ikon, warna_ikon, kategori_id, aktif, slug_pendek } = body;
     if (!judul || !url) return errorResponse('Judul dan URL wajib diisi', 400);
 
-    // Validasi slug_pendek unik (jika diisi)
-    const slugVal = slug_pendek ? slug_pendek.toLowerCase().replace(/[^a-z0-9\-]/g, '').trim() : null;
+    // Sanitasi slug
+    const slugVal = slug_pendek
+      ? slug_pendek.toLowerCase().replace(/[^a-z0-9\-]/g, '').trim() || null
+      : null;
+
+    // Validasi slug unik (jika diisi)
     if (slugVal) {
       try {
-        const exist = await sql`SELECT id FROM links WHERE slug_pendek = ${slugVal} LIMIT 1`;
+        const exist = await sql`
+          SELECT id FROM links WHERE slug_pendek = ${slugVal} LIMIT 1
+        `;
         if (exist.length) return errorResponse('Slug pendek sudah digunakan, coba yang lain', 409);
       } catch (err) {
-        console.error(err);
-        return errorResponse('Gagal cek slug');
+        console.error('[POST /api/links] cek slug error:', err.message);
+        if (err.message?.includes('slug_pendek')) {
+          return errorResponse('Kolom slug_pendek belum ada di database. Jalankan migrasi SQL terlebih dahulu.', 500);
+        }
+        return errorResponse('Gagal cek slug: ' + err.message, 500);
       }
     }
 
@@ -72,8 +81,12 @@ export const handler = async (event) => {
       const rows = await sql`
         INSERT INTO links (judul, url, deskripsi, ikon, warna_ikon, kategori_id, aktif, slug_pendek)
         VALUES (
-          ${judul}, ${url}, ${deskripsi || null}, ${ikon || 'link'},
-          ${warna_ikon || '#1a73e8'}, ${kategori_id || null},
+          ${judul},
+          ${url},
+          ${deskripsi || null},
+          ${ikon || '🔗'},
+          ${warna_ikon || '#0077B6'},
+          ${kategori_id || null},
           ${aktif !== false},
           ${slugVal}
         )
@@ -81,8 +94,11 @@ export const handler = async (event) => {
       `;
       return jsonResponse({ link: rows[0] }, 201);
     } catch (err) {
-      console.error(err);
-      return errorResponse('Gagal menyimpan link');
+      console.error('[POST /api/links] insert error:', err.message);
+      if (err.message?.includes('slug_pendek')) {
+        return errorResponse('Kolom slug_pendek belum ada. Jalankan migrasi SQL terlebih dahulu.', 500);
+      }
+      return errorResponse('Gagal menyimpan link: ' + err.message, 500);
     }
   }
 
@@ -91,31 +107,33 @@ export const handler = async (event) => {
     const body = parseBody(event);
     const { judul, url, deskripsi, ikon, warna_ikon, kategori_id, aktif, slug_pendek } = body;
 
-    // Validasi slug_pendek unik (selain dirinya sendiri)
+    // slugVal: undefined = tidak diubah, null = hapus slug, string = set baru
     const slugVal = slug_pendek !== undefined
-      ? (slug_pendek ? slug_pendek.toLowerCase().replace(/[^a-z0-9\-]/g, '').trim() : null)
+      ? (slug_pendek ? slug_pendek.toLowerCase().replace(/[^a-z0-9\-]/g, '').trim() || null : null)
       : undefined;
 
     if (slugVal) {
       try {
-        const exist = await sql`SELECT id FROM links WHERE slug_pendek = ${slugVal} AND id != ${id} LIMIT 1`;
+        const exist = await sql`
+          SELECT id FROM links WHERE slug_pendek = ${slugVal} AND id != ${id} LIMIT 1
+        `;
         if (exist.length) return errorResponse('Slug pendek sudah digunakan, coba yang lain', 409);
       } catch (err) {
-        console.error(err);
-        return errorResponse('Gagal cek slug');
+        console.error('[PUT /api/links] cek slug error:', err.message);
+        return errorResponse('Gagal cek slug: ' + err.message, 500);
       }
     }
 
     try {
       const rows = await sql`
         UPDATE links SET
-          judul       = COALESCE(${judul}, judul),
-          url         = COALESCE(${url}, url),
+          judul       = COALESCE(${judul ?? null}, judul),
+          url         = COALESCE(${url ?? null}, url),
           deskripsi   = ${deskripsi !== undefined ? deskripsi : sql`deskripsi`},
-          ikon        = COALESCE(${ikon}, ikon),
-          warna_ikon  = COALESCE(${warna_ikon}, warna_ikon),
-          kategori_id = ${kategori_id !== undefined ? kategori_id : sql`kategori_id`},
-          aktif       = COALESCE(${aktif}, aktif),
+          ikon        = COALESCE(${ikon ?? null}, ikon),
+          warna_ikon  = COALESCE(${warna_ikon ?? null}, warna_ikon),
+          kategori_id = ${kategori_id !== undefined ? (kategori_id || null) : sql`kategori_id`},
+          aktif       = COALESCE(${aktif ?? null}, aktif),
           slug_pendek = ${slugVal !== undefined ? slugVal : sql`slug_pendek`},
           updated_at  = NOW()
         WHERE id = ${id}
@@ -124,8 +142,8 @@ export const handler = async (event) => {
       if (!rows.length) return errorResponse('Link tidak ditemukan', 404);
       return jsonResponse({ link: rows[0] });
     } catch (err) {
-      console.error(err);
-      return errorResponse('Gagal mengupdate link');
+      console.error('[PUT /api/links] update error:', err.message);
+      return errorResponse('Gagal mengupdate link: ' + err.message, 500);
     }
   }
 
@@ -135,8 +153,8 @@ export const handler = async (event) => {
       await sql`DELETE FROM links WHERE id = ${id}`;
       return jsonResponse({ ok: true });
     } catch (err) {
-      console.error(err);
-      return errorResponse('Gagal menghapus link');
+      console.error('[DELETE /api/links]', err.message);
+      return errorResponse('Gagal menghapus link: ' + err.message, 500);
     }
   }
 
